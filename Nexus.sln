@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus", "Assembly-CSharp.csproj", "{50D6E239-F23B-5F1A-DA44-2D9B9B18AE89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus", "Assembly-CSharp-firstpass.csproj", "{7E718623-98B4-4C23-2AAC-9C2B3B9D352F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus", "Assembly-CSharp-Editor.csproj", "{505B8F29-7005-EFC6-836B-DDB9A69002C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50D6E239-F23B-5F1A-DA44-2D9B9B18AE89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50D6E239-F23B-5F1A-DA44-2D9B9B18AE89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50D6E239-F23B-5F1A-DA44-2D9B9B18AE89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50D6E239-F23B-5F1A-DA44-2D9B9B18AE89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E718623-98B4-4C23-2AAC-9C2B3B9D352F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E718623-98B4-4C23-2AAC-9C2B3B9D352F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E718623-98B4-4C23-2AAC-9C2B3B9D352F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E718623-98B4-4C23-2AAC-9C2B3B9D352F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{505B8F29-7005-EFC6-836B-DDB9A69002C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{505B8F29-7005-EFC6-836B-DDB9A69002C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{505B8F29-7005-EFC6-836B-DDB9A69002C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{505B8F29-7005-EFC6-836B-DDB9A69002C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

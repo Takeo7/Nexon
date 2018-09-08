@@ -11,12 +11,16 @@ public class Casilla : MonoBehaviour {
 
     public Text numero;
 
+	public Image image;
+
+
     GameManager GM;
 
     private void Start()
     {
         GM = GameManager.instance;
-    }
+		UpdateColor();
+	}
 
     public void PressNewCoin()
     {
@@ -38,12 +42,14 @@ public class Casilla : MonoBehaviour {
     {
         value++;
         ShowText();
-    }
+		UpdateColor();
+	}
     [PunRPC]
     public void UpdateValue(int i)
     {
         value = i;
         ShowText();
+		UpdateColor();
     }
 
     [PunRPC]
@@ -56,6 +62,27 @@ public class Casilla : MonoBehaviour {
         ShowText();
     }
 
+	void UpdateColor()
+	{
+		switch (value)
+		{
+			case 0:
+				image.color = GM.colorNUM[0];
+				break;
+			case 1:
+				image.color = GM.colorNUM[1];
+				break;
+			case 2:
+				image.color = GM.colorNUM[2];
+				break;
+			case 3:
+				image.color = GM.colorNUM[3];
+				break;
+			case 4:
+				image.color = GM.colorNUM[4];
+				break;
+		}
+	}
     public void AddPosition(int x, int y)
     {
         posicion = new Vector2(x, y);

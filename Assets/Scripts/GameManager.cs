@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour {
 
     DificultadIA dificultadIA;
 
+	public Color[] colorNUM;
+
     private void Start()
     {
         Connect();

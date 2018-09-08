@@ -62,6 +62,7 @@ MonoBehaviour:
   value: 0
   posicion: {x: 0, y: 0}
   numero: {fileID: 114837848161382020}
+  image: {fileID: 114998816870347200}
 --- !u!114 &114122171058162046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -165,7 +166,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 100
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -192,8 +193,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 97c9144f3a95c92479ab98b469b952a1, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

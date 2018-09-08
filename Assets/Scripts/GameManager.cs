@@ -19,21 +19,20 @@ public class GameManager : MonoBehaviour {
 
     #endregion
 
-    // LEER: https://doc.photonengine.com/en-us/pun/current/demos-and-tutorials/package-demos/rockpaperscissors-demo
+    public string GameVersion = "0.0.1"; // Version del juego para que coincidan todos en la misma
 
-    public string GameVersion = "0.0.1";
+    public PhotonView pView; //Componente PhotonView para hacer llamadas del tipo RPC por la red
 
-    public PhotonView pView;
+    public GameObject[,] casillas = new GameObject[6,6]; // Array de 2º Grado para el tablero
 
-    public GameObject[,] casillas = new GameObject[6,6];
+    public GameObject casillaPrefab; // Prefab de cada casilla
 
-    public GameObject casillaPrefab;
+    public Transform canvasPanel; // Canvas principal
 
-    public Transform canvasPanel;
+    public GameObject winnerGO; // GameObject del panel de Fin de partida
+    bool endGame = false; // Bool para check si ha acabado la partida en las corrutinas
 
-    public GameObject winnerGO;
-    bool endGame = false;
-
+    //Textos varios
     public Text turnoText;
     public Text PlayerPointsText;
     public Text IAPointsText;
@@ -51,7 +50,7 @@ public class GameManager : MonoBehaviour {
 
     int NumJugadores = 0;
 
-    public GameObject nonTouch;
+    public GameObject nonTouch; //GameObject invisible para no permitir poner fichas cuando no es su turno
 
     int fichasPuestas = 0;
     int totalFichas = 0;
@@ -122,8 +121,39 @@ public class GameManager : MonoBehaviour {
         PhotonNetwork.room.IsVisible = false;
     }
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            Vector3 pos = transform.localPosition;
+            stream.Serialize(ref pos);
+        }
+        else
+        {
+            Vector3 pos = Vector3.zero;
+            stream.Serialize(ref pos);  // pos gets filled-in. must be used somewhere
+        }
+    }
     #endregion
-
+    #region StartingGame
+    [PunRPC]
+    public void StartMatch()
+    {
+        if (PhotonNetwork.player.ID == 1)
+        {
+            MiTurno = true;
+            nonTouch.SetActive(false);
+            fichasPuestas = 0;
+            turnoText.text = "Mi turno";
+            StartCoroutine("TurnTime");
+        }
+        else if (PhotonNetwork.player.ID == 2)
+        {
+            MiTurno = false;
+            nonTouch.SetActive(true);
+            turnoText.text = "Turno Enemigo";
+        }
+    }
     public void GetNumPlayer()
     {
         Debug.Log("Player ID: " + PhotonNetwork.player.ID);
@@ -152,7 +182,6 @@ public class GameManager : MonoBehaviour {
         }
         GetComponent<PhotonView>().RPC("LastPlayerArrived", PhotonTargets.All, PhotonNetwork.player.ID);
     }
-
     private void CreateTable()
     {
         MiTurno = true;
@@ -280,7 +309,6 @@ public class GameManager : MonoBehaviour {
                 break;
         }
     }
-
     void UpdateLimitText()
     {
         switch (gameType)
@@ -294,7 +322,7 @@ public class GameManager : MonoBehaviour {
                 break;
         }
     }
-
+    #endregion
     #region IA
     GameObject IAHard()
     {
@@ -314,14 +342,14 @@ public class GameManager : MonoBehaviour {
                             maxNumber = casillas[i, j];
                     }
                 }
-                else if (casillas[i,j].GetComponent<Casilla>().value >= 2 && fichasPuestas <= 2)
+                else if (casillas[i,j].GetComponent<Casilla>().value == 2 && fichasPuestas <= 2)
                 {
                     if (casillas[i, j].GetComponent<Casilla>().value > maxNumber.GetComponent<Casilla>().value)
                     {
                             maxNumber = casillas[i, j];
                     }
                 }
-                else if (casillas[i, j].GetComponent<Casilla>().value >= 1 && fichasPuestas <= 0)
+                else if (casillas[i, j].GetComponent<Casilla>().value == 1 && fichasPuestas <= 0)
                 {
                     if (casillas[i, j].GetComponent<Casilla>().value > maxNumber.GetComponent<Casilla>().value)
                     {
@@ -365,7 +393,7 @@ public class GameManager : MonoBehaviour {
                             maxNumber = casillas[i, j];
                     }
                 }
-                else if (casillas[i, j].GetComponent<Casilla>().value >= 2 && fichasPuestas <= 2)
+                else if (casillas[i, j].GetComponent<Casilla>().value == 2 && fichasPuestas <= 2)
                 {
                     if (casillas[i, j].GetComponent<Casilla>().value > maxNumber.GetComponent<Casilla>().value)
                     {
@@ -526,7 +554,6 @@ public class GameManager : MonoBehaviour {
         }
     }
     #endregion
-    //Haciendo los turnos
     #region NetworkEnemy 
 
     [PunRPC]
@@ -568,7 +595,6 @@ public class GameManager : MonoBehaviour {
 
     #endregion
     #region Points
-
     void SetLimits()
     {
         switch (gameType)
@@ -662,7 +688,14 @@ public class GameManager : MonoBehaviour {
     void ShowPoints()
     {
         PlayerPointsText.text = "Player: " + player1Points + "p";
-        IAPointsText.text = "IA: " + IAPoints + "p";
+        if (OnlineGame == false)
+        {
+            IAPointsText.text = "IA: " + IAPoints + "p";
+        }
+        else
+        {
+            IAPointsText.text = "Enemy: " + IAPoints + "p";
+        }        
     }
     #endregion
     #region Coins
@@ -709,7 +742,11 @@ public class GameManager : MonoBehaviour {
     [PunRPC]
     public void NetCheckExplosions()
     {
-        if (PhotonNetwork.player.ID == 1)
+        if (OnlineGame == false)
+        {
+            StartCoroutine("CheckExplosionsCoroutine");
+        }
+        else if (PhotonNetwork.player.ID == 1)
         {
             StartCoroutine("CheckExplosionsCoroutine");
         }       
@@ -724,8 +761,14 @@ public class GameManager : MonoBehaviour {
             checking = CheckExplosions();
             yield return new WaitForSeconds(0.5f);
         }
-
-        pView.RPC("EndOfTurn", PhotonTargets.All);
+        if (OnlineGame == false)
+        {
+            EndOfTurn();
+        }
+        else if (OnlineGame == true)
+        {
+            pView.RPC("EndOfTurn", PhotonTargets.All);
+        }
     }
 
     public bool CheckExplosions()
@@ -862,7 +905,8 @@ public class GameManager : MonoBehaviour {
         }
 
     }
-
+    #endregion
+    #region TurnsManagement
     [PunRPC]
     public void EndOfTurn()
     {
@@ -875,7 +919,8 @@ public class GameManager : MonoBehaviour {
             {
                 Debug.Log("Soy player 1");
                 pView.RPC("ChangeTurn", PhotonTargets.All, 1);
-            }else if (PhotonNetwork.player.ID == 2 && MiTurno == true)
+            }
+            else if (PhotonNetwork.player.ID == 2 && MiTurno == true)
             {
                 Debug.Log("Soy player 2");
                 pView.RPC("ChangeTurn", PhotonTargets.All, 2);
@@ -902,30 +947,6 @@ public class GameManager : MonoBehaviour {
             StartCoroutine("TurnTime");
         }
     }
-
-    [PunRPC]
-    public void StartMatch()
-    {
-        if (PhotonNetwork.player.ID == 1)
-        {
-            MiTurno = true;
-            nonTouch.SetActive(false);
-            fichasPuestas = 0;
-            turnoText.text = "Mi turno";
-            StartCoroutine("TurnTime");
-        }
-        else if (PhotonNetwork.player.ID == 2)
-        {
-            MiTurno = false;
-            nonTouch.SetActive(true);
-            turnoText.text = "Turno Enemigo";
-        }
-    }
-
-    
-
-    
-    #endregion
 
     IEnumerator TurnTime()
     {
@@ -962,9 +983,12 @@ public class GameManager : MonoBehaviour {
         {
             winnerText.text = s + "\nHA GANADO!";
         }
-        PhotonNetwork.room.IsVisible = false;
+        if (OnlineGame == true)
+        {
+            PhotonNetwork.room.IsVisible = false;
+        }
     }
-
+    #endregion
     public void NewGame()
     {
         SceneManager.LoadScene(1);
@@ -973,19 +997,7 @@ public class GameManager : MonoBehaviour {
     {
         SceneManager.LoadScene(0);
     }
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.isWriting)
-        {
-            Vector3 pos = transform.localPosition;
-            stream.Serialize(ref pos);
-        }
-        else
-        {
-            Vector3 pos = Vector3.zero;
-            stream.Serialize(ref pos);  // pos gets filled-in. must be used somewhere
-        }
-    }
+
 
     enum DificultadIA { Easy, Mid, Hard}
     public enum GameType { Puntuacion, Fichas}

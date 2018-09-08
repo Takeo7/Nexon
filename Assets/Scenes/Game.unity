@@ -454,6 +454,7 @@ MonoBehaviour:
   LimitText: {fileID: 61264887}
   MiTurno: 0
   OnlineGame: 0
+  exploding: 0
   player1Points: 0
   player2Points: 0
   IAPoints: 0
@@ -631,7 +632,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Tu turno
+  m_Text: 
 --- !u!1 &689255502
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,7 +958,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Tu turno
+  m_Text: 
 --- !u!222 &1259525553
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1037,7 +1038,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Tu turno
+  m_Text: 
 --- !u!1 &2066541287
 GameObject:
   m_ObjectHideFlags: 0

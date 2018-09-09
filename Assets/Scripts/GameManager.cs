@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour {
 
     public GameObject casillaPrefab; // Prefab de cada casilla
 
+    public GameObject[] fichasUsables;
+
     public Transform canvasPanel; // Canvas principal
 
     public GameObject winnerGO; // GameObject del panel de Fin de partida
@@ -138,6 +140,18 @@ public class GameManager : MonoBehaviour {
     }
     #endregion
     #region StartingGame
+    public void SetFichasUsables()
+    {
+        if (MiTurno)
+        {
+            int length = fichasUsables.Length;
+            for (int i = 0; i < length; i++)
+            {
+                fichasUsables[i].SetActive(true);
+            }
+        }       
+    }
+    
     [PunRPC]
     public void StartMatch()
     {
@@ -146,6 +160,7 @@ public class GameManager : MonoBehaviour {
             MiTurno = true;
             nonTouch.SetActive(false);
             fichasPuestas = 0;
+            SetFichasUsables();
             turnoText.text = "Mi turno";
             StartCoroutine("TurnTime");
         }
@@ -261,6 +276,15 @@ public class GameManager : MonoBehaviour {
                 posY += -100;
             }
             posX += 100;
+        }
+        if (OnlineGame == false)
+        {
+            MiTurno = true;
+            nonTouch.SetActive(false);
+            fichasPuestas = 0;
+            SetFichasUsables();
+            turnoText.text = "Mi turno";
+            StartCoroutine("TurnTime");
         }
     }
     void SetOnlineGame()
@@ -566,6 +590,7 @@ public class GameManager : MonoBehaviour {
         {
             turnoText.text = "Tu turno";
             MiTurno = true;
+            SetFichasUsables();
             fichasPuestas = 0;
             nonTouch.SetActive(false);
             StartCoroutine("TurnTime");
@@ -702,9 +727,30 @@ public class GameManager : MonoBehaviour {
     #endregion
     #region Coins
     [PunRPC]
+    public void LessFichasUsables()
+    {
+        Debug.Log("LessFichasUsables");
+        if (MiTurno)
+        {
+            Debug.Log("LessFichasUsables - MiTurno");
+            int length = fichasUsables.Length;
+            for (int i = 0; i < length; i++)
+            {
+                Debug.Log("LessFichasUsables - for");
+                if (fichasUsables[i].GetActive() == true)
+                {
+                    Debug.Log("LessFichasUsables - SetActive");
+                    fichasUsables[i].SetActive(false);
+                    break;
+                }
+            }
+            Debug.Log("LessFichasUsables - End For");
+        }
+    }
     public void NewCoinPlayed()
     {
         fichasPuestas++;
+        LessFichasUsables();
         fichasMaximas--;
         UpdateLimitText();
         if (gameType == GameType.Fichas)
@@ -943,6 +989,7 @@ public class GameManager : MonoBehaviour {
         {
             StopCoroutine("IA");
             MiTurno = true;
+            SetFichasUsables();
             nonTouch.SetActive(false);
             fichasPuestas = 0;
             turnoText.text = "Mi Turno";

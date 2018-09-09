@@ -53,4 +53,5 @@ MonoBehaviour:
   - NewCoinPlayed
   - AddPoints
   - EndOfTurn
+  - LessFichasUsables
   DisableAutoOpenWizard: 1

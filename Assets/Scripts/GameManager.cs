@@ -589,6 +589,7 @@ public class GameManager : MonoBehaviour {
         if (playerID != PhotonNetwork.player.ID)
         {
             turnoText.text = "Tu turno";
+			turnoText.gameObject.SetActive(true);
             MiTurno = true;
             SetFichasUsables();
             fichasPuestas = 0;
@@ -602,7 +603,8 @@ public class GameManager : MonoBehaviour {
             MiTurno = false;
             nonTouch.SetActive(true);
             turnoText.text = "Turno Enemigo";
-            fichasPuestas = 0;
+			turnoText.gameObject.SetActive(true);
+			fichasPuestas = 0;
         }
     }
 
@@ -714,14 +716,14 @@ public class GameManager : MonoBehaviour {
     }
     void ShowPoints()
     {
-        PlayerPointsText.text = "Player: " + player1Points + "p";
+        PlayerPointsText.text = /*"Player: "*/ + player1Points + "p";
         if (OnlineGame == false)
         {
-            IAPointsText.text = "IA: " + IAPoints + "p";
+            IAPointsText.text = /*"IA: "*/ + IAPoints + "p";
         }
         else
         {
-            IAPointsText.text = "Enemy: " + IAPoints + "p";
+            IAPointsText.text = /*"Enemy: "*/ + IAPoints + "p";
         }        
     }
     #endregion

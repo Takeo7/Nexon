@@ -35,6 +35,7 @@ public class Casilla : MonoBehaviour {
             GetComponent<PhotonView>().RPC("AddCoin", PhotonTargets.All);
             GM.pView.RPC("NewCoinPlayed", PhotonTargets.All);
         }
+		//Instantiate Tap 
     }
 
     [PunRPC]
@@ -50,13 +51,13 @@ public class Casilla : MonoBehaviour {
         value = i;
         ShowText();
 		UpdateColor();
-    }
+		GameObject temp = Instantiate(GM.particles[0]);
+		temp.transform.position = transform.position;
+	}
 
     [PunRPC]
     public void ChangeParams(int posX, int posY, Vector2 localPos, int coins)
     {
-        transform.SetParent(GameObject.FindGameObjectWithTag("Respawn").transform);
-        transform.localPosition = localPos;
         AddPosition(posX,posY);
         value = coins;
         ShowText();

@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour {
     DificultadIA dificultadIA;
 
 	public Color[] colorNUM;
+	public GameObject[] particles;//0 explosion / 1 tap / 2 points update
 
     private void Start()
     {
@@ -269,10 +270,10 @@ public class GameManager : MonoBehaviour {
 
                 }
                 casillas[i, j] = PhotonNetwork.Instantiate("casillaPrefab", Vector3.zero,Quaternion.identity,0);
-                casillas[i, j].GetComponent<PhotonView>().RPC("ChangeParams", PhotonTargets.AllBuffered, i, j, new Vector2(posX, posY),coinsDef);
-                casillas[i, j].transform.SetParent(canvasPanel);
-                casillas[i, j].transform.localPosition = new Vector2(posX, posY);
-                casillas[i, j].GetComponent<Casilla>().AddPosition(i, j);
+				casillas[i, j].GetComponent<PhotonView>().RPC("ChangeParams", PhotonTargets.AllBuffered, i, j, new Vector2(posX, posY),coinsDef);
+				casillas[i, j].transform.SetParent(canvasPanel);
+				casillas[i, j].transform.localScale= Vector3.one;
+				casillas[i, j].GetComponent<Casilla>().AddPosition(i, j);
                 posY += -100;
             }
             posX += 100;
@@ -985,6 +986,7 @@ public class GameManager : MonoBehaviour {
             nonTouch.SetActive(true);
             fichasPuestas = 0;
             turnoText.text = "Turno IA";
+			turnoText.gameObject.SetActive(true);
             StartCoroutine("IA");
         }
         else if (endGame == false && OnlineGame == false && MiTurno == false)
@@ -995,7 +997,8 @@ public class GameManager : MonoBehaviour {
             nonTouch.SetActive(false);
             fichasPuestas = 0;
             turnoText.text = "Mi Turno";
-            StartCoroutine("TurnTime");
+			turnoText.gameObject.SetActive(true);
+			StartCoroutine("TurnTime");
         }
     }
 

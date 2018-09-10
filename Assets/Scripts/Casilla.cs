@@ -35,7 +35,8 @@ public class Casilla : MonoBehaviour {
             GetComponent<PhotonView>().RPC("AddCoin", PhotonTargets.All);
             GM.pView.RPC("NewCoinPlayed", PhotonTargets.All);
         }
-		//Instantiate Tap 
+		GameObject temp = Instantiate(GM.particles[1]);
+		temp.transform.position = transform.position;
     }
 
     [PunRPC]

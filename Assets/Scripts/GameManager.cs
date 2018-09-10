@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour {
     public Text winnerText;
     public Text turnTimerText;
     public Text LimitText;
+	public Text player1NameText;
+	public Text enemyNameText;
 
     public bool MiTurno = true;
     public bool OnlineGame = false;
@@ -65,7 +67,7 @@ public class GameManager : MonoBehaviour {
     DificultadIA dificultadIA;
 
 	public Color[] colorNUM;
-	public GameObject[] particles;//0 explosion / 1 tap / 2 points update
+	public GameObject[] particles;//0 explosion / 1 tap / 2 points update 0 / 3 points update 
 	public GameObject blackBG;
 	public Image timeBar;
 
@@ -721,13 +723,26 @@ public class GameManager : MonoBehaviour {
     }
     void ShowPoints()
     {
+		if (MiTurno)
+		{
+			particles[2].SetActive(false);
+			particles[2].SetActive(true);
+		}
+		else
+		{
+			particles[3].SetActive(false);
+			particles[3].SetActive(true);
+		}
+		player1NameText.text = "Player";
         PlayerPointsText.text = /*"Player: "*/ + player1Points + "p";
         if (OnlineGame == false)
         {
+			enemyNameText.text = "IA";
             IAPointsText.text = /*"IA: "*/ + IAPoints + "p";
         }
         else
         {
+			enemyNameText.text = "Enemy";
             IAPointsText.text = /*"Enemy: "*/ + IAPoints + "p";
         }        
     }

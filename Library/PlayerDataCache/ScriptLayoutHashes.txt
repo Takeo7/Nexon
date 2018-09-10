@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-F:/JuegosUnity/JuegoFichasLnBuilds/Nexus - 0.0.17.apk
+F:/UnityProjects/Exports/Nexus/Nexus-0.1.1.apk
 SceneListBegin?
 Assets/Scenes/Menu.unity
 Assets/Scenes/Game.unity
@@ -102,7 +102,7 @@ c63db43c730fa2cbb8ca07de15898cb6 UnityEngine.UI.dll:UnityEngine.UI.Toggle
 f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
-2bd09b47d7d353152941d7c954f434e0 Assembly-CSharp.dll:.GameManager
+afe0585fe311ddf8f31460fc81bd59e6 Assembly-CSharp.dll:.GameManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.OnClickFlashRpc
 ebfdd2489194de73284a969277395ad0 Assembly-CSharp.dll:.DemoRPGMovement
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:ExitGames.Demos.ToDemoHubButton
@@ -210,12 +210,13 @@ cb9b23bb8d8552626640cca26addf6f1 Assembly-CSharp.dll:.FriendItem
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
+c4d9c21fae62dda6acb19eb7f33142ac Assembly-CSharp.dll:.BGMovement
 abe32a93cd37b12375c9475f8f38bec3 Assembly-CSharp.dll:.PunTurnManager
 9e0ef5bf862444b5dc48b5a99554ce7c UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioListenerExtension
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
-193089d3105d79089478b278594a3a22 Assembly-CSharp.dll:.Casilla
+b5b66a68efa5e3b34b1eaba782b91ac7 Assembly-CSharp.dll:.Casilla
 9cb24d80f90c6c239d5304446a0d7f3e Assembly-CSharp.dll:.CubeInter
 c0b17230605b48ee2c8fdf6ad9d187ec Assembly-CSharp.dll:ExitGames.Demos.DemoAnimator.CameraWork
 febb860c81dce3b7f633ebf56de24419 Assembly-CSharp.dll:.IdleRunJump
@@ -242,6 +243,7 @@ ec0082b40adf3b0930cd87250ffdbf1d Assembly-CSharp.dll:.SupportLogger
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.OnPickedUpScript
 1356b4a6096c35c829823b7e28399030 Assembly-CSharp.dll:.ShowStatusWhenConnecting
 298901e5fd6ccf8cd5b55cb6018e6abe Assembly-CSharp.dll:.PickupItemSimple
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TextAnimatorEnds
 08712033bfb8d4fd2842041f9a20ded7 Assembly-CSharp.dll:.ManualPhotonViewAllocator
 a2d612afa0d90f75edf1d10832a65609 Assembly-CSharp.dll:.JumpAndRunMovement
 1356b4a6096c35c829823b7e28399030 Assembly-CSharp.dll:.DemoMecanimGUI
@@ -257,5 +259,6 @@ bd391be401e6d3724720058620cce6e5 Assembly-CSharp.dll:.ToHubButton
 4b8b25ed60c1bb417f20991003ba0256 Assembly-CSharp.dll:.WorkerMenu
 604f5f55c1cc414f64da1990b36ff015 Assembly-CSharp.dll:.PhotonView
 b2dc25029b6f083ffbbdf9df269f825a Assembly-CSharp.dll:.InRoomChat
+052699756524ee7dfc06152d083a601e Assembly-CSharp.dll:.DestroyAfterX
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ClickDetector
 54a26a95db9c623b6eb6fc01ae3ef891 Assembly-CSharp.dll:.CubeExtra

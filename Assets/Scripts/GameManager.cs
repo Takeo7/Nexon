@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            PhotonNetwork.ConnectUsingSettings(GameVersion); // Conectamos usando los settings Default del Usuario
+            PhotonNetwork.ConnectUsingSettings(GameVersion/*+ PUNTOS*/); // Conectamos usando los settings Default del Usuario
         }
     }
 

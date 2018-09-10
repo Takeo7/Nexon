@@ -66,6 +66,8 @@ public class GameManager : MonoBehaviour {
 
 	public Color[] colorNUM;
 	public GameObject[] particles;//0 explosion / 1 tap / 2 points update
+	public GameObject blackBG;
+	public Image timeBar;
 
     private void Start()
     {
@@ -164,6 +166,7 @@ public class GameManager : MonoBehaviour {
             SetFichasUsables();
             turnoText.text = "Mi turno";
             StartCoroutine("TurnTime");
+			StartCoroutine("BarTime");
         }
         else if (PhotonNetwork.player.ID == 2)
         {
@@ -286,7 +289,8 @@ public class GameManager : MonoBehaviour {
             SetFichasUsables();
             turnoText.text = "Mi turno";
             StartCoroutine("TurnTime");
-        }
+			StartCoroutine("BarTime");
+		}
     }
     void SetOnlineGame()
     {
@@ -981,7 +985,9 @@ public class GameManager : MonoBehaviour {
         else if (endGame == false && OnlineGame == false && MiTurno == true)
         {
             StopCoroutine("TurnTime");
-            MiTurno = false;
+			StartCoroutine("BarTime");
+			timeBar.fillAmount = 1;
+			MiTurno = false;
             turnTimerText.text = "";
             nonTouch.SetActive(true);
             fichasPuestas = 0;
@@ -998,9 +1004,22 @@ public class GameManager : MonoBehaviour {
             fichasPuestas = 0;
             turnoText.text = "Mi Turno";
 			turnoText.gameObject.SetActive(true);
+			StartCoroutine("BarTime");
 			StartCoroutine("TurnTime");
-        }
+		}
     }
+	IEnumerator BarTime()
+	{
+		float duration = 40f; // 3 seconds you can change this 
+							 //to whatever you want
+		float normalizedTime = 1;
+		while (normalizedTime >= 0f)
+		{
+			timeBar.fillAmount = normalizedTime;
+			normalizedTime -= Time.deltaTime / duration;
+			yield return null;
+		}
+	}
 
     IEnumerator TurnTime()
     {
@@ -1011,6 +1030,7 @@ public class GameManager : MonoBehaviour {
             yield return new WaitForSeconds(1);
             time--;
             turnTimerText.text = time + "s";
+			//timeBar.fillAmount = time / 40f;
         }
         nonTouch.SetActive(true);
         turnoText.text = "Turno IA";
@@ -1028,6 +1048,7 @@ public class GameManager : MonoBehaviour {
         StopCoroutine("IA");
         StopCoroutine("TurnTime");
         winnerGO.SetActive(true);
+		blackBG.SetActive(true);
         nonTouch.SetActive(true);
         if (s == "Empate")
         {

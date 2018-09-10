@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour {
         SetOnlineGame();
         SetGameType();
         SetMaxLimits();
-        ShowPoints();        
+        ShowPoints(false);        
     }
 
     #region Network
@@ -92,7 +92,15 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            PhotonNetwork.ConnectUsingSettings(GameVersion/*+ PUNTOS*/); // Conectamos usando los settings Default del Usuario
+            if (PlayerPrefs.GetInt("GameType") == 0)
+            {
+                PhotonNetwork.ConnectUsingSettings(GameVersion + 0 + PlayerPrefs.GetInt("PuntosLimit"));
+            }
+            else if(PlayerPrefs.GetInt("GameType") == 1)
+            {
+                PhotonNetwork.ConnectUsingSettings(GameVersion + 1 + PlayerPrefs.GetInt("FichasLimit"));
+            }
+             // Conectamos usando los settings Default del Usuario
         }
     }
 
@@ -653,7 +661,7 @@ public class GameManager : MonoBehaviour {
             if (MiTurno == true)
             {
                 player1Points++;
-                ShowPoints();
+                ShowPoints(true);
                 if (player1Points >= puntosMaximos && gameType == GameType.Puntuacion)
                 {
                     endGame = true;
@@ -664,7 +672,7 @@ public class GameManager : MonoBehaviour {
             else
             {
                 IAPoints++;
-                ShowPoints();
+                ShowPoints(true);
                 if (IAPoints >= puntosMaximos && gameType == GameType.Puntuacion)
                 {
                     endGame = true;
@@ -678,7 +686,7 @@ public class GameManager : MonoBehaviour {
             if (MiTurno == true && PhotonNetwork.player.ID == 1)
             {
                 player1Points++;
-                ShowPoints();
+                ShowPoints(true);
                 if (player1Points >= puntosMaximos && gameType == GameType.Puntuacion)
                 {
                     endGame = true;
@@ -689,7 +697,7 @@ public class GameManager : MonoBehaviour {
             else if(MiTurno == false && PhotonNetwork.player.ID == 1)
             {
                 IAPoints++;
-                ShowPoints();
+                ShowPoints(true);
                 if (IAPoints >= puntosMaximos && gameType == GameType.Puntuacion)
                 {
                     endGame = true;
@@ -699,7 +707,7 @@ public class GameManager : MonoBehaviour {
             }else if (MiTurno == true && PhotonNetwork.player.ID == 2)
             {
                 player1Points++;
-                ShowPoints();
+                ShowPoints(true);
                 if (player1Points >= puntosMaximos && gameType == GameType.Puntuacion)
                 {
                     endGame = true;
@@ -710,7 +718,7 @@ public class GameManager : MonoBehaviour {
             else if (MiTurno == false && PhotonNetwork.player.ID == 2)
             {
                 IAPoints++;
-                ShowPoints();
+                ShowPoints(true);
                 if (IAPoints >= puntosMaximos && gameType == GameType.Puntuacion)
                 {
                     endGame = true;
@@ -721,9 +729,9 @@ public class GameManager : MonoBehaviour {
         }
         
     }
-    void ShowPoints()
+    void ShowPoints(bool b)
     {
-		if (MiTurno)
+		if (MiTurno && b)
 		{
 			particles[2].SetActive(false);
 			particles[2].SetActive(true);

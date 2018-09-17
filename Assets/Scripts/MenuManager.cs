@@ -63,6 +63,7 @@ public class MenuManager : MonoBehaviour {
         PlayerPrefs.SetInt("Online", i);
         ChangeGameType();
         ChangeDificultad();
+		LanguageManager.instance.ClearTexts();
         SceneManager.LoadScene(1);
     }
 

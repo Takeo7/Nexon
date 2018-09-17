@@ -71,13 +71,16 @@ public class GameManager : MonoBehaviour {
 	public GameObject blackBG;
 	public Image timeBar;
 
+	LanguageManager LM;
+
     private void Start()
     {
+		LM = LanguageManager.instance;
         Connect();
         SetOnlineGame();
         SetGameType();
         SetMaxLimits();
-        ShowPoints(false);        
+        ShowPoints(false);  
     }
 
     #region Network
@@ -174,7 +177,7 @@ public class GameManager : MonoBehaviour {
             nonTouch.SetActive(false);
             fichasPuestas = 0;
             SetFichasUsables();
-            turnoText.text = "Mi turno";
+            turnoText.text = LM.ReturnLine(9);
             StartCoroutine("TurnTime");
 			StartCoroutine("BarTime");
         }
@@ -182,7 +185,7 @@ public class GameManager : MonoBehaviour {
         {
             MiTurno = false;
             nonTouch.SetActive(true);
-            turnoText.text = "Turno Enemigo";
+            turnoText.text = LM.ReturnLine(8);
         }
     }
     public void GetNumPlayer()
@@ -208,7 +211,7 @@ public class GameManager : MonoBehaviour {
             turnTimerText.text = "";
             MiTurno = false;
             nonTouch.SetActive(true);
-            turnoText.text = "Turno Enemigo";
+            turnoText.text = LM.ReturnLine(8);
             fichasPuestas = 0;
         }
         GetComponent<PhotonView>().RPC("LastPlayerArrived", PhotonTargets.All, PhotonNetwork.player.ID);
@@ -297,7 +300,7 @@ public class GameManager : MonoBehaviour {
             nonTouch.SetActive(false);
             fichasPuestas = 0;
             SetFichasUsables();
-            turnoText.text = "Mi turno";
+            turnoText.text = LM.ReturnLine(9);
             StartCoroutine("TurnTime");
 			StartCoroutine("BarTime");
 		}
@@ -340,11 +343,11 @@ public class GameManager : MonoBehaviour {
         {
             case GameType.Puntuacion:
                 puntosMaximos = PlayerPrefs.GetInt("PuntosLimit");
-                LimitText.text = "Puntos Objetivo: " + puntosMaximos + "p";
+                LimitText.text = LM.ReturnLine(3)+ " " + puntosMaximos + "p";
                 break;
             case GameType.Fichas:
                 fichasMaximas = PlayerPrefs.GetInt("FichasLimit");
-                LimitText.text = "Fichas Restantes: " + fichasMaximas + "fichas";
+                LimitText.text = LM.ReturnLine(13)+ " " + fichasMaximas + LM.ReturnLine(2);
                 break;
             default:
                 break;
@@ -357,7 +360,7 @@ public class GameManager : MonoBehaviour {
             case GameType.Puntuacion:
                 break;
             case GameType.Fichas:
-                LimitText.text = "Fichas Restantes: " + fichasMaximas + "fichas";
+                LimitText.text = LM.ReturnLine(14)+ " " + fichasMaximas + LM.ReturnLine(2);
                 break;
             default:
                 break;
@@ -603,7 +606,7 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Change Turn " + playerID);
         if (playerID != PhotonNetwork.player.ID)
         {
-            turnoText.text = "Tu turno";
+            turnoText.text = LM.ReturnLine(9);
 			turnoText.gameObject.SetActive(true);
             MiTurno = true;
             SetFichasUsables();
@@ -617,7 +620,7 @@ public class GameManager : MonoBehaviour {
             turnTimerText.text = "";
             MiTurno = false;
             nonTouch.SetActive(true);
-            turnoText.text = "Turno Enemigo";
+            turnoText.text = LM.ReturnLine(8);
 			turnoText.gameObject.SetActive(true);
 			fichasPuestas = 0;
         }
@@ -666,7 +669,7 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
-                    EndGame("Player");
+                    EndGame(LM.ReturnLine(4));
                 }
             }
             else
@@ -677,7 +680,7 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
-                    EndGame("IA");
+                    EndGame(LM.ReturnLine(5));
                 }
             }
         }
@@ -691,7 +694,7 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
-                    EndGame("You");
+                    EndGame(LM.ReturnLine(4));
                 }
             }
             else if(MiTurno == false && PhotonNetwork.player.ID == 1)
@@ -702,7 +705,7 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
-                    EndGame("Enemy");
+                    EndGame(LM.ReturnLine(6));
                 }
             }else if (MiTurno == true && PhotonNetwork.player.ID == 2)
             {
@@ -712,7 +715,7 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
-                    EndGame("You");
+                    EndGame(LM.ReturnLine(4));
                 }
             }
             else if (MiTurno == false && PhotonNetwork.player.ID == 2)
@@ -723,7 +726,7 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
-                    EndGame("Enemy");
+                    EndGame(LM.ReturnLine(6));
                 }
             }
         }
@@ -741,16 +744,16 @@ public class GameManager : MonoBehaviour {
 			particles[3].SetActive(false);
 			particles[3].SetActive(true);
 		}
-		player1NameText.text = "Player";
+		player1NameText.text = LM.ReturnLine(4);
         PlayerPointsText.text = /*"Player: "*/ + player1Points + "p";
         if (OnlineGame == false)
         {
-			enemyNameText.text = "IA";
+			enemyNameText.text = LM.ReturnLine(5);
             IAPointsText.text = /*"IA: "*/ + IAPoints + "p";
         }
         else
         {
-			enemyNameText.text = "Enemy";
+			enemyNameText.text = LM.ReturnLine(6);
             IAPointsText.text = /*"Enemy: "*/ + IAPoints + "p";
         }        
     }
@@ -790,12 +793,12 @@ public class GameManager : MonoBehaviour {
                 if (player1Points > IAPoints)
                 {
                     StopAllCoroutines();
-                    EndGame("Player");
+                    EndGame(LM.ReturnLine(4));
                 }
                 else if(IAPoints > player1Points)
                 {
                     StopAllCoroutines();
-                    EndGame("IA");
+                    EndGame(LM.ReturnLine(5));
                 }
                 else
                 {
@@ -810,7 +813,7 @@ public class GameManager : MonoBehaviour {
             fichasPuestas = 0;
             StopCoroutine("TurnTime");
             StopCoroutine("IA");
-            turnTimerText.text = "Explotions";
+            turnTimerText.text = LM.ReturnLine(15);
             nonTouch.SetActive(true);
             //pView.RPC("NetCheckExplosions", PhotonTargets.All);
             NetCheckExplosions();
@@ -1014,7 +1017,7 @@ public class GameManager : MonoBehaviour {
             turnTimerText.text = "";
             nonTouch.SetActive(true);
             fichasPuestas = 0;
-            turnoText.text = "Turno IA";
+            turnoText.text = LM.ReturnLine(7);
 			turnoText.gameObject.SetActive(true);
             StartCoroutine("IA");
         }
@@ -1025,7 +1028,7 @@ public class GameManager : MonoBehaviour {
             SetFichasUsables();
             nonTouch.SetActive(false);
             fichasPuestas = 0;
-            turnoText.text = "Mi Turno";
+            turnoText.text = LM.ReturnLine(9);
 			turnoText.gameObject.SetActive(true);
 			StartCoroutine("BarTime");
 			StartCoroutine("TurnTime");
@@ -1075,11 +1078,11 @@ public class GameManager : MonoBehaviour {
         nonTouch.SetActive(true);
         if (s == "Empate")
         {
-            winnerText.text = s;
+            winnerText.text = LM.ReturnLine(16);
         }
         else
         {
-            winnerText.text = s + "\nHA GANADO!";
+            winnerText.text = s + "\n"+ LM.ReturnLine(17);
         }
         if (OnlineGame == true)
         {
@@ -1089,11 +1092,13 @@ public class GameManager : MonoBehaviour {
     #endregion
     public void NewGame()
     {
+		LM.ClearTexts();
         SceneManager.LoadScene(1);
     }
     public void GoToMenu()
     {
-        SceneManager.LoadScene(0);
+		LM.ClearTexts();
+		SceneManager.LoadScene(0);
     }
 
 

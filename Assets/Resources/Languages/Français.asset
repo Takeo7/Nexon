@@ -34,3 +34,10 @@ MonoBehaviour:
   - Options
   - Son
   - Langage
+  - Tutoriel
+  - Appuyez sur pour ajouter 1
+  - "Vous avez 3 fois \xE0 ajouter ou jusqu'\xE0 ce que le temps soit \xE9coul\xE9"
+  - "\xC0 la fin du quart, tous les \"4\" explosent"
+  - "En explosant, ajoutez 1 aux carr\xE9s proches"
+  - "Si ces bo\xEEtes atteignent \xE9galement 4, elles vont exploser en cha\xEEne"
+  - "Gagner qui arrive en premier au score indiqu\xE9"

@@ -34,3 +34,10 @@ MonoBehaviour:
   - Optionen
   - Sound
   - Sprache
+  - Tutorial
+  - "Tap, um 1 hinzuzuf\xFCgen"
+  - "Sie m\xFCssen 3 Mal hinzuf\xFCgen oder bis die Zeit abl\xE4uft"
+  - Am Ende der Schicht explodieren alle "4"
+  - "Wenn du explodierst, f\xFCge 1 zu den nahen Quadraten hinzu"
+  - Wenn diese Felder auch 4 erreichen, werden sie in der Kette explodieren
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt

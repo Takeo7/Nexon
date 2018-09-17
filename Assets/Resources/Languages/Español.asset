@@ -34,3 +34,10 @@ MonoBehaviour:
   - Opciones
   - Sonido
   - Idioma
+  - Tutorial
+  - Tap para sumar 1
+  - Tienes 3 veces para sumar, o hasta que se acabe el tiempo
+  - Al final del turno todos los "4" explotan
+  - Al explotar, suman 1 a las casillas que tienen cerca
+  - "Si estas casillas tambi\xE9n llegan a 4 explotar\xE1n en cadena"
+  - "Gana el que llegue primero a la puntuaci\xF3n designada"

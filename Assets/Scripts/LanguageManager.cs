@@ -26,11 +26,13 @@ public class LanguageManager : MonoBehaviour {
 	private void Start()
 	{
 		DontDestroyOnLoad(gameObject);
+		SelectLanguage((byte)PlayerPrefs.GetInt("language"));
 	}
 	public void SelectLanguage(byte i)
 	{
 		languageSelected = languageInfo[i];
 		UpdateText();
+		PlayerPrefs.SetInt("language", i);
 	}
 	public void UpdateText()
 	{

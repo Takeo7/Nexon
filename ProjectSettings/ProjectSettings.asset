@@ -755,12 +755,16 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
+    Build: 0
+    Collab: 0
+    ErrorHub: 0
+    Hub: 0
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: 9cc6bfb0-a530-48b1-822a-d022aca41dd1
-  projectName: JuegoFichasLn
-  organizationId: 7takeo
+  cloudProjectId: 4d0ca023-945f-46dc-9e94-c8ec59438810
+  projectName: Nexon
+  organizationId: playnexon
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

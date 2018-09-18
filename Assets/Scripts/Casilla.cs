@@ -15,11 +15,13 @@ public class Casilla : MonoBehaviour {
 
 
     GameManager GM;
+	SoundManager SM;
 
     private void Start()
     {
         GM = GameManager.instance;
 		UpdateColor();
+		SM = SoundManager.instance;
 	}
 
     public void PressNewCoin()
@@ -37,6 +39,7 @@ public class Casilla : MonoBehaviour {
         }
 		GameObject temp = Instantiate(GM.particles[1]);
 		temp.transform.position = transform.position;
+		SM.PlaySound(SM.sounds[0]);
     }
 
     [PunRPC]

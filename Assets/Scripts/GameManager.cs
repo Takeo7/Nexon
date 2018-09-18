@@ -72,10 +72,12 @@ public class GameManager : MonoBehaviour {
 	public Image timeBar;
 
 	LanguageManager LM;
+	SoundManager SM;
 
     private void Start()
     {
 		LM = LanguageManager.instance;
+		SM = SoundManager.instance;
         Connect();
         SetOnlineGame();
         SetGameType();
@@ -739,7 +741,7 @@ public class GameManager : MonoBehaviour {
 			particles[2].SetActive(false);
 			particles[2].SetActive(true);
 		}
-		else
+		else if(MiTurno == false && b)
 		{
 			particles[3].SetActive(false);
 			particles[3].SetActive(true);
@@ -862,7 +864,8 @@ public class GameManager : MonoBehaviour {
             {
                 if (casillas[i, j].GetComponent<Casilla>().value == 4)
                 {
-                    if (OnlineGame == false)
+					SM.PlaySound(SM.sounds[1]);
+					if (OnlineGame == false)
                     {
                         AddCoinNext(new Vector2(i,j));
                         casillas[i, j].GetComponent<Casilla>().UpdateValue(0);

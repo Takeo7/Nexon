@@ -18,9 +18,14 @@ public class MenuManager : MonoBehaviour {
     public ToggleGroup FichasLimitTG;
     public ToggleGroup DificultadTG;
 
+	AdManager AD;
 
+	private void Start()
+	{
+		AD = AdManager.instance;
+	}
 
-    public void ChangeGameType()
+	public void ChangeGameType()
     {
         if (puntosT.isOn)
         {
@@ -64,6 +69,7 @@ public class MenuManager : MonoBehaviour {
         ChangeGameType();
         ChangeDificultad();
 		LanguageManager.instance.ClearTexts();
+		AD.SetIsGame(true);
         SceneManager.LoadScene(1);
     }
 

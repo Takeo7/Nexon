@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-F:/UnityProjects/Exports/Nexus/Nexon0.3.apk
+F:/UnityProjects/Exports/Nexus/Nexon0.3.1.apk
 SceneListBegin?
 Assets/Scenes/Menu.unity
 Assets/Scenes/Game.unity

@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-F:/UnityProjects/Exports/Nexus/Nexon0.2.1.apk
+F:/UnityProjects/Exports/Nexus/Nexon0.3.apk
 SceneListBegin?
 Assets/Scenes/Menu.unity
 Assets/Scenes/Game.unity
@@ -213,7 +213,7 @@ ea580b2edab741d1d6e6445b14097645 Assembly-CSharp.dll:.RPGCamera
 f02726adeff0a3ec5905565234b372da UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.PlaymodeTestsController
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
 cb9b23bb8d8552626640cca26addf6f1 Assembly-CSharp.dll:.FriendItem
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.AdManager
+0c6614083ffc3857983817f30ff0ed7d Assembly-CSharp.dll:.AdManager
 9e0ef5bf862444b5dc48b5a99554ce7c UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioListenerExtension
 e0f7ffd5d5c2abe4b2e16569a21163da UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 67a5f2c97205d2e41a8ed7c7ce898f6e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension

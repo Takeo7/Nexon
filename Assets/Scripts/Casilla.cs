@@ -22,6 +22,8 @@ public class Casilla : MonoBehaviour {
         GM = GameManager.instance;
 		UpdateColor();
 		SM = SoundManager.instance;
+		transform.SetParent(GM.canvasPanel);
+		transform.localScale = Vector3.one;
 	}
 
     public void PressNewCoin()

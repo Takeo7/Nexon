@@ -73,13 +73,15 @@ public class GameManager : MonoBehaviour {
 
 	LanguageManager LM;
 	SoundManager SM;
+	AdManager AD;
 
     private void Start()
     {
 		LM = LanguageManager.instance;
 		SM = SoundManager.instance;
-        Connect();
-        SetOnlineGame();
+		AD = AdManager.instance;
+		SetOnlineGame();
+		Connect();
         SetGameType();
         SetMaxLimits();
         ShowPoints(false);  
@@ -136,11 +138,14 @@ public class GameManager : MonoBehaviour {
         Debug.Log("OnJoinedRoom"); // Debug.Log para saber cuando conecta a una Room
         GetNumPlayer();      
     }
-
+	[PunRPC]
     private void Disconnect()
     {
         PhotonNetwork.Disconnect();
-        PhotonNetwork.room.IsVisible = false;
+		if(PlayerPrefs.GetInt("Online") == 1)
+		{
+			PhotonNetwork.room.IsVisible = false;
+		}
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -167,7 +172,15 @@ public class GameManager : MonoBehaviour {
             {
                 fichasUsables[i].SetActive(true);
             }
-        }       
+        }
+		else
+		{
+			int length = fichasUsables.Length;
+			for (int i = 0; i < length; i++)
+			{
+				fichasUsables[i].SetActive(false);
+			}
+		}
     }
     
     [PunRPC]
@@ -615,11 +628,14 @@ public class GameManager : MonoBehaviour {
             fichasPuestas = 0;
             nonTouch.SetActive(false);
             StartCoroutine("TurnTime");
-        }
+			StartCoroutine("BarTime");
+
+		}
         else
         {
             StopCoroutine("TurnTime");
-            turnTimerText.text = "";
+			StartCoroutine("BarTime");
+			turnTimerText.text = "";
             MiTurno = false;
             nonTouch.SetActive(true);
             turnoText.text = LM.ReturnLine(8);
@@ -782,6 +798,7 @@ public class GameManager : MonoBehaviour {
             Debug.Log("LessFichasUsables - End For");
         }
     }
+	[PunRPC]
     public void NewCoinPlayed()
     {
         fichasPuestas++;
@@ -922,7 +939,8 @@ public class GameManager : MonoBehaviour {
         if (OnlineGame == false)
         {
             AddPoints();
-        }else
+        }
+		else
         {
             pView.RPC("AddPoints", PhotonTargets.All);
         }
@@ -1001,12 +1019,16 @@ public class GameManager : MonoBehaviour {
             Debug.Log("End of turn: " + PhotonNetwork.player.ID);
             if (PhotonNetwork.player.ID == 1 && MiTurno == true)
             {
-                Debug.Log("Soy player 1");
+				StopCoroutine("TurnTime");
+				StartCoroutine("BarTime");
+				Debug.Log("Soy player 1");
                 pView.RPC("ChangeTurn", PhotonTargets.All, 1);
             }
             else if (PhotonNetwork.player.ID == 2 && MiTurno == true)
             {
-                Debug.Log("Soy player 2");
+				StopCoroutine("TurnTime");
+				StartCoroutine("BarTime");
+				Debug.Log("Soy player 2");
                 pView.RPC("ChangeTurn", PhotonTargets.All, 2);
             }
 
@@ -1068,6 +1090,10 @@ public class GameManager : MonoBehaviour {
         {
             StartCoroutine("IA");
         }
+		else if(endGame == false && OnlineGame == true)
+		{
+			NetCheckExplosions();
+		}
         StopCoroutine("TurnTime");
     }
 
@@ -1091,6 +1117,7 @@ public class GameManager : MonoBehaviour {
         {
             PhotonNetwork.room.IsVisible = false;
         }
+		AD.ShowInstantAd();
     }
     #endregion
     public void NewGame()
@@ -1101,6 +1128,8 @@ public class GameManager : MonoBehaviour {
     public void GoToMenu()
     {
 		LM.ClearTexts();
+		AD.SetIsGame(false);
+		pView.RPC("Disconnect", PhotonTargets.All);
 		SceneManager.LoadScene(0);
     }
 

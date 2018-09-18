@@ -54,4 +54,5 @@ MonoBehaviour:
   - AddPoints
   - EndOfTurn
   - LessFichasUsables
+  - Disconnect
   DisableAutoOpenWizard: 1

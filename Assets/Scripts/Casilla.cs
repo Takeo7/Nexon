@@ -13,6 +13,7 @@ public class Casilla : MonoBehaviour {
 
 	public Image image;
 
+    int peso;
 
     GameManager GM;
 	SoundManager SM;
@@ -24,6 +25,7 @@ public class Casilla : MonoBehaviour {
 		SM = SoundManager.instance;
 		transform.SetParent(GM.canvasPanel);
 		transform.localScale = Vector3.one;
+        GM.delegadoPeso += SetPeso;
 	}
 
     public void PressNewCoin()
@@ -68,7 +70,14 @@ public class Casilla : MonoBehaviour {
         value = coins;
         ShowText();
     }
-
+    public void SetPeso(int p)
+    {
+        peso = p;
+    }
+    public int GetPeso()
+    {
+        return peso;
+    }
 	void UpdateColor()
 	{
 		switch (value)

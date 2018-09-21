@@ -20,9 +20,22 @@ public class MenuManager : MonoBehaviour {
 
 	AdManager AD;
 
+    int ADCount;
+
 	private void Start()
 	{
 		AD = AdManager.instance;
+        ADCount = PlayerPrefs.GetInt("ADCount");
+        ADCount++;
+        if (ADCount >= 3)
+        {
+            AD.ShowInstantAd();
+            PlayerPrefs.SetInt("ADCount", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("ADCount", ADCount);
+        }
 	}
 
 	public void ChangeGameType()

@@ -13,7 +13,8 @@ public class Casilla : MonoBehaviour {
 
 	public Image image;
 
-    int peso;
+    public int peso;
+    public bool hasChecked = false;
 
     GameManager GM;
 	SoundManager SM;

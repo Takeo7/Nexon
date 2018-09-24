@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
     public PhotonView pView; //Componente PhotonView para hacer llamadas del tipo RPC por la red
 
     public GameObject[,] casillas = new GameObject[6,6]; // Array de 2º Grado para el tablero
+    public Casilla[,] casillasScripts = new Casilla[6, 6];
 
     public GameObject casillaPrefab; // Prefab de cada casilla
 
@@ -79,6 +80,9 @@ public class GameManager : MonoBehaviour {
 	LanguageManager LM;
 	SoundManager SM;
 	AdManager AD;
+
+    //DELETE FOR TEST
+    public GameObject[] casillastest = new GameObject[3];
 
     private void Start()
     {
@@ -309,7 +313,8 @@ public class GameManager : MonoBehaviour {
 				casillas[i, j].GetComponent<PhotonView>().RPC("ChangeParams", PhotonTargets.AllBuffered, i, j, new Vector2(posX, posY),coinsDef);
 				casillas[i, j].transform.SetParent(canvasPanel);
 				casillas[i, j].transform.localScale= Vector3.one;
-				casillas[i, j].GetComponent<Casilla>().AddPosition(i, j);
+                casillasScripts[i, j] = casillas[i, j].GetComponent<Casilla>();
+                casillasScripts[i,j].AddPosition(i, j);
                 posY += -100;
             }
             posX += 100;
@@ -388,6 +393,19 @@ public class GameManager : MonoBehaviour {
     }
     #endregion
     #region IA
+    void ResetChecked()
+    {
+        int lengthX = casillas.GetLength(0);
+        int lengthY = casillas.GetLength(1);
+
+        for (int i = 0; i < lengthX; i++)
+        {
+            for (int j = 0; j < lengthY; j++)
+            {
+                casillasScripts[i, j].hasChecked = false;
+            }
+        }
+    }
     GameObject[] IAHard()
     {
         GameObject[] maxNumber = new GameObject[3];
@@ -404,7 +422,9 @@ public class GameManager : MonoBehaviour {
             {
                 if (casillas[i, j].GetComponent<Casilla>().value == 2)
                 {
+                    casillas[i, j].GetComponent<Casilla>().hasChecked = true;
                     casillas[i, j].GetComponent<Casilla>().SetPeso(IACheckColindants(new Vector2(i, j)));
+                    ResetChecked();
                     if (fichasPuestas <= 1)
                     {
                         for (int h = 0; h < 2; h++)
@@ -423,7 +443,8 @@ public class GameManager : MonoBehaviour {
                 }
                 else if(casillas[i, j].GetComponent<Casilla>().value == 3)
                 {                    
-                    casillas[i, j].GetComponent<Casilla>().SetPeso(10 + IACheckColindants(new Vector2(i, j)));
+                    casillas[i, j].GetComponent<Casilla>().SetPeso(1 + IACheckColindants(new Vector2(i, j)));
+                    ResetChecked();
                     if (maxNumber[2] == null)
                     {
                         maxNumber[2] = casillas[i, j];
@@ -567,10 +588,11 @@ public class GameManager : MonoBehaviour {
 
         if (posicionX - 1 >= 0)
         {
-            if (casillas[posicionX - 1, posicionY].GetComponent<Casilla>().value == 3)
+            if (casillas[posicionX - 1, posicionY].GetComponent<Casilla>().value == 3 && casillas[posicionX - 1, posicionY].GetComponent<Casilla>().hasChecked == false)
             {
                 peso++;
-                peso += IACheckColindantsSec(new Vector2(posicionX - 1, posicionY));
+                casillas[posicionX - 1, posicionY].GetComponent<Casilla>().hasChecked = true;
+                peso += IACheckColindants(new Vector2(posicionX - 1, posicionY));
             }
             else if (casillas[posicionX - 1, posicionY].GetComponent<Casilla>().value == 4)
             {
@@ -579,10 +601,11 @@ public class GameManager : MonoBehaviour {
         }
         if (posicionX + 1 <= 5)
         {
-            if (casillas[posicionX + 1, posicionY].GetComponent<Casilla>().value == 3)
+            if (casillas[posicionX + 1, posicionY].GetComponent<Casilla>().value == 3 && casillas[posicionX + 1, posicionY].GetComponent<Casilla>().hasChecked == false)
             {
                 peso++;
-                peso += IACheckColindantsSec(new Vector2(posicionX + 1, posicionY));
+                casillas[posicionX + 1, posicionY].GetComponent<Casilla>().hasChecked = true;
+                peso += IACheckColindants(new Vector2(posicionX + 1, posicionY));
             }
             else if (casillas[posicionX + 1, posicionY].GetComponent<Casilla>().value == 4)
             {
@@ -591,10 +614,11 @@ public class GameManager : MonoBehaviour {
         }
         if (posicionY - 1 >= 0)
         {
-            if (casillas[posicionX, posicionY - 1].GetComponent<Casilla>().value == 3)
+            if (casillas[posicionX, posicionY - 1].GetComponent<Casilla>().value == 3 && casillas[posicionX, posicionY - 1].GetComponent<Casilla>().hasChecked == false)
             {
                 peso++;
-                peso += IACheckColindantsSec(new Vector2(posicionX, posicionY - 1));
+                casillas[posicionX, posicionY - 1].GetComponent<Casilla>().hasChecked = true;
+                peso += IACheckColindants(new Vector2(posicionX, posicionY - 1));
             }
             else if (casillas[posicionX, posicionY - 1].GetComponent<Casilla>().value == 4)
             {
@@ -603,10 +627,11 @@ public class GameManager : MonoBehaviour {
         }
         if (posicionY + 1 <= 5)
         {
-            if (casillas[posicionX, posicionY + 1].GetComponent<Casilla>().value == 3)
+            if (casillas[posicionX, posicionY + 1].GetComponent<Casilla>().value == 3 && casillas[posicionX, posicionY + 1].GetComponent<Casilla>().hasChecked == false)
             {
                 peso++;
-                peso += IACheckColindantsSec(new Vector2(posicionX, posicionY + 1));
+                casillas[posicionX, posicionY + 1].GetComponent<Casilla>().hasChecked = true;
+                peso += IACheckColindants(new Vector2(posicionX, posicionY + 1));
             }
             else if (casillas[posicionX, posicionY + 1].GetComponent<Casilla>().value == 4)
             {
@@ -725,6 +750,7 @@ public class GameManager : MonoBehaviour {
                 break;
             case DificultadIA.Hard:
                 GameObject[] gG = IAHard();
+                casillastest = gG;
                 for (int i = 0; i < 3; i++)
                 {
                     yield return new WaitForSeconds(2);

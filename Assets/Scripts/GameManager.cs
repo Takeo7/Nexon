@@ -321,13 +321,38 @@ public class GameManager : MonoBehaviour {
         }
         if (OnlineGame == false)
         {
-            MiTurno = true;
-            nonTouch.SetActive(false);
-            fichasPuestas = 0;
-            SetFichasUsables();
-            turnoText.text = LM.ReturnLine(9);
-            StartCoroutine("TurnTime");
-			StartCoroutine("BarTime");
+            int rand = Random.Range(0, 2);
+            if (rand == 2)
+            {
+                rand = 0;
+            }
+            switch (rand)
+            {
+                case 0:
+                    MiTurno = true;
+                    nonTouch.SetActive(false);
+                    fichasPuestas = 0;
+                    SetFichasUsables();
+                    turnoText.text = LM.ReturnLine(9);
+                    turnoText.gameObject.SetActive(true);
+                    StartCoroutine("TurnTime");
+                    StartCoroutine("BarTime");
+                    break;
+                case 1:
+                    StopCoroutine("TurnTime");
+                    StartCoroutine("BarTime");
+                    timeBar.fillAmount = 1;
+                    MiTurno = false;
+                    turnTimerText.text = "";
+                    nonTouch.SetActive(true);
+                    fichasPuestas = 0;
+                    turnoText.text = LM.ReturnLine(7);
+                    turnoText.gameObject.SetActive(true);
+                    StartCoroutine("IA");
+                    break;
+                default:
+                    break;
+            }
 		}
     }
     void SetOnlineGame()
@@ -406,9 +431,9 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
-    GameObject[] IAHard()
+    GameObject IAHard()
     {
-        GameObject[] maxNumber = new GameObject[3];
+        GameObject maxNumber = new GameObject();
 
         int lengthX = casillas.GetLength(0);
         int lengthY = casillas.GetLength(1);
@@ -427,40 +452,36 @@ public class GameManager : MonoBehaviour {
                     ResetChecked();
                     if (fichasPuestas <= 1)
                     {
-                        for (int h = 0; h < 2; h++)
+                        if (maxNumber.GetComponent<Casilla>() == false)
                         {
-                            if (maxNumber[h] == null)
-                            {
-                                maxNumber[h] = casillas[i, j];
-                            }
-                            else if (maxNumber[h].GetComponent<Casilla>().GetPeso() < casillas[i,j].GetComponent<Casilla>().GetPeso())
-                            {
-                                maxNumber[h] = casillas[i, j];
-                            }
-                            
+                            maxNumber = casillas[i, j];
+                        }
+                        else if (maxNumber.GetComponent<Casilla>().GetPeso() < casillas[i,j].GetComponent<Casilla>().GetPeso())
+                        {
+                            maxNumber = casillas[i, j];
                         }
                     }
                 }
-                else if(casillas[i, j].GetComponent<Casilla>().value == 3)
+                else if(casillas[i, j].GetComponent<Casilla>().value == 3 && fichasPuestas == 2)
                 {                    
                     casillas[i, j].GetComponent<Casilla>().SetPeso(1 + IACheckColindants(new Vector2(i, j)));
                     ResetChecked();
-                    if (maxNumber[2] == null)
+                    if (maxNumber.GetComponent<Casilla>() == false)
                     {
-                        maxNumber[2] = casillas[i, j];
+                        maxNumber = casillas[i, j];
                     }
-                    else if (maxNumber[2].GetComponent<Casilla>().GetPeso() < casillas[i, j].GetComponent<Casilla>().GetPeso())
+                    else if (maxNumber.GetComponent<Casilla>().GetPeso() < casillas[i, j].GetComponent<Casilla>().GetPeso())
                     {
-                        maxNumber[2] = casillas[i, j];
+                        maxNumber = casillas[i, j];
                     }
                 }               
                 else if (casillas[i,j].GetComponent<Casilla>().value <= 1)
                 {
                     for (int k = 0; k < 3; k++)
                     {
-                        if (maxNumber[k] == null)
+                        if (maxNumber.GetComponent<Casilla>() == false)
                         {
-                            maxNumber[k] = casillas[i, j];
+                            maxNumber = casillas[i, j];
                         }
                     }
                 }
@@ -470,50 +491,53 @@ public class GameManager : MonoBehaviour {
     }
     GameObject IAMid()
     {
-        GameObject maxNumber = casillas[1, 1];
+        GameObject maxNumber = new GameObject();
 
         int lengthX = casillas.GetLength(0);
         int lengthY = casillas.GetLength(1);
+
+        //Check max number
+
 
         for (int i = 0; i < lengthX; i++)
         {
             for (int j = 0; j < lengthY; j++)
             {
-                if (casillas[i, j].GetComponent<Casilla>().value == 3)
+                if (casillas[i, j].GetComponent<Casilla>().value == 2)
                 {
-                    if (casillas[i, j].GetComponent<Casilla>().value > maxNumber.GetComponent<Casilla>().value)
+                    casillas[i, j].GetComponent<Casilla>().hasChecked = true;
+                    casillas[i, j].GetComponent<Casilla>().SetPeso(IACheckColindants(new Vector2(i, j)));
+                    ResetChecked();
+                    if (fichasPuestas <= 1)
                     {
+                        if (maxNumber.GetComponent<Casilla>() == false)
+                        {
                             maxNumber = casillas[i, j];
-                    }
-                }
-                else if (casillas[i, j].GetComponent<Casilla>().value == 2 && fichasPuestas <= 2)
-                {
-                    if (casillas[i, j].GetComponent<Casilla>().value > maxNumber.GetComponent<Casilla>().value)
-                    {
-                        int rand = Random.Range(0, 2);
-                        if (rand == 0)
+                        }
+                        else if (maxNumber.GetComponent<Casilla>().GetPeso() < casillas[i, j].GetComponent<Casilla>().GetPeso())
                         {
                             maxNumber = casillas[i, j];
                         }
                     }
                 }
-                else if (casillas[i, j].GetComponent<Casilla>().value >= 1 && fichasPuestas <= 0)
+                else if (casillas[i, j].GetComponent<Casilla>().value == 3)
                 {
-                    if (casillas[i, j].GetComponent<Casilla>().value > maxNumber.GetComponent<Casilla>().value)
+                    casillas[i, j].GetComponent<Casilla>().SetPeso(1 + IACheckColindants(new Vector2(i, j)));
+                    ResetChecked();
+                    if (maxNumber.GetComponent<Casilla>() == false)
                     {
-                        int rand = Random.Range(0, 4);
-                        if (rand == 0)
-                        {
-                            maxNumber = casillas[i, j];
-                        }
+                        maxNumber = casillas[i, j];
+                    }
+                    else if (maxNumber.GetComponent<Casilla>().GetPeso() < casillas[i, j].GetComponent<Casilla>().GetPeso())
+                    {
+                        maxNumber = casillas[i, j];
                     }
                 }
                 else if (casillas[i, j].GetComponent<Casilla>().value <= 1)
                 {
-                    if (casillas[i, j].GetComponent<Casilla>().value >= maxNumber.GetComponent<Casilla>().value)
+                    for (int k = 0; k < 3; k++)
                     {
-                        int rand = Random.Range(0, 2);
-                        if (rand == 0)
+                        if (maxNumber.GetComponent<Casilla>() == false)
                         {
                             maxNumber = casillas[i, j];
                         }
@@ -749,13 +773,13 @@ public class GameManager : MonoBehaviour {
                 }
                 break;
             case DificultadIA.Hard:
-                GameObject[] gG = IAHard();
-                casillastest = gG;
                 for (int i = 0; i < 3; i++)
                 {
                     yield return new WaitForSeconds(2);
+                    delegadoPeso(0);
+                    GameObject gG = IAHard();
                     MiTurno = false;
-                    gG[i].GetComponent<Casilla>().AddCoin();
+                    gG.GetComponent<Casilla>().AddCoin();
                     NewCoinPlayed();
                     Debug.Log("IA placed coin");
                 }

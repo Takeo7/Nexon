@@ -86,7 +86,7 @@ public class MenuManager : MonoBehaviour {
 		/*if (i == 1)
 			SceneManager.LoadScene (2);
 		else */
-			SceneManager.LoadScene(1);
+		SceneManager.LoadScene(1);
 	
     }
 

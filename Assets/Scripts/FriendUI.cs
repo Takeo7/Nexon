@@ -7,10 +7,27 @@ public class FriendUI : MonoBehaviour {
 
     public Friend data;
     [SerializeField]
-    Image blocked, fav;
+    Image blocked = null, fav = null;
+    [SerializeField]
+    Text displayName = null;
     
     [SerializeField]
-    GameObject popUpPrefab;
+    FriendOptionPopup popUpPrefab;
+
+    public string DisplayName { get { return data.displayName; } }
+    public string UID { get { return data.uid; } }
+
+    private void OnEnable()
+    {
+        RefreshData();
+    }
+
+    public void RefreshData()
+    {
+        displayName.text = data.displayName;
+        blocked.gameObject.SetActive(data.isBlocked);
+        fav.gameObject.SetActive(data.isFavourite);
+    }
 
     public void ShowPopup()
     {
@@ -21,6 +38,6 @@ public class FriendUI : MonoBehaviour {
             canvas = canvas.parent;
         }
 
-        Instantiate( popUpPrefab , canvas );
+        Instantiate( popUpPrefab , canvas ).Show( data );
     }
 }

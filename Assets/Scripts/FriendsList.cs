@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Firebase.Auth;
 using Firebase.Database;
 using UnityEngine;
@@ -11,6 +10,10 @@ public class FriendsList : MonoBehaviour {
     InputField emailAmigo = null;
     [SerializeField]
     GameObject popupAddFriend = null;
+    [SerializeField]
+    FriendUI amigoPrefab = null;
+    [SerializeField]
+    Transform amigosContent = null, solicitudesContent = null;
 
     void Start()
     {
@@ -19,6 +22,8 @@ public class FriendsList : MonoBehaviour {
 
     private void GetFriends()
     {
+        if (FirebaseAuth.DefaultInstance == null || FirebaseAuth.DefaultInstance.CurrentUser == null)
+            return;
         string currentUserUid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
 
         FirebaseDatabase.DefaultInstance.GetReference( "users/"+currentUserUid+"/friends" ).GetValueAsync().ContinueWith( task => {
@@ -28,6 +33,16 @@ public class FriendsList : MonoBehaviour {
             }
             else if( task.IsCompleted )
             {
+
+                foreach ( Transform t in amigosContent )
+                {
+                    Destroy(t.gameObject);
+                }
+                foreach ( Transform t in solicitudesContent )
+                {
+                    Destroy(t.gameObject);
+                }
+
                 DataSnapshot snapshot = task.Result;
 
                 List<Friend> friends = new List<Friend>();
@@ -49,6 +64,10 @@ public class FriendsList : MonoBehaviour {
 
                             friends.Add( f );
                             Debug.LogWarning( friends[friends.Count - 1] );
+                            FriendUI fui = Instantiate(amigoPrefab, amigosContent);
+
+                            fui.data = f;
+                            fui.RefreshData();
                         }
                     } );
                 }
@@ -72,6 +91,10 @@ public class FriendsList : MonoBehaviour {
         };
 
         FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/friends/" + friendUId ).SetRawJsonValueAsync( JsonUtility.ToJson( friend ) );
+
+        friend.uid = currentUserUid;
+
+        FirebaseDatabase.DefaultInstance.GetReference("/users/" + friendUId + "/friends/" + friendUId).SetRawJsonValueAsync(JsonUtility.ToJson(friend));
     }
 
     public static void AddFriendByEmail( string email )

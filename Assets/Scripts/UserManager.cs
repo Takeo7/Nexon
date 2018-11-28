@@ -45,7 +45,7 @@ public class UserManager : MonoBehaviour {
     {
         if( user != null )
         {
-            SceneManager.LoadScene( 1 );
+            SceneManager.LoadScene( "Amigos" ); //Cambiar esto y  poner menu
         }
         else
         {

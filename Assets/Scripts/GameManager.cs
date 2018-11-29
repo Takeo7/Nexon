@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour {
                 PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchID"));
             }
             Debug.LogWarning("MatchID: " + PlayerPrefs.GetString("MatchID"));
-            PlayerPrefs.DeleteKey("MatchID");
+            //PlayerPrefs.DeleteKey("MatchID");
              // Conectamos usando los settings Default del Usuario
         }
     }

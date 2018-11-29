@@ -245,6 +245,7 @@ namespace Prototype.NetworkLobby
 		{
 			base.OnMatchCreate(success, extendedInfo, matchInfo);
             _currentMatchID = (System.UInt64)matchInfo.networkId;
+            PlayerPrefs.SetString("MatchID", _currentMatchID.ToString());
 		}
 
 		public override void OnDestroyMatch(bool success, string extendedInfo)

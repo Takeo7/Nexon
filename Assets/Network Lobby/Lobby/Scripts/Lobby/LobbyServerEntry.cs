@@ -22,13 +22,14 @@ namespace Prototype.NetworkLobby
             NetworkID networkID = match.networkId;
 
             joinButton.onClick.RemoveAllListeners();
-            joinButton.onClick.AddListener(() => { JoinMatch(networkID, lobbyManager); });
+            joinButton.onClick.AddListener( () => { JoinMatch(networkID, lobbyManager); });
 
             GetComponent<Image>().color = c;
         }
 
         void JoinMatch(NetworkID networkID, LobbyManager lobbyManager)
         {
+            PlayerPrefs.SetString("MatchID",((ulong)networkID).ToString());
 			lobbyManager.matchMaker.JoinMatch(networkID, "", "", "", 0, 0, lobbyManager.OnMatchJoined);
 			lobbyManager.backDelegate = lobbyManager.StopClientClbk;
             lobbyManager._isMatchmaking = true;

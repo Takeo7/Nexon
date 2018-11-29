@@ -88,10 +88,10 @@ public class MenuManager : MonoBehaviour {
         ChangeDificultad();
 		LanguageManager.instance.ClearTexts();
 		AD.SetIsGame(true);
-		/*if (i == 1)
-			SceneManager.LoadScene (2);
-		else */
-		SceneManager.LoadScene(1);
+		if (i == 1)
+			SceneManager.LoadScene ("Game");
+		else 
+		    SceneManager.LoadScene("Lobby");
 	
     }
 

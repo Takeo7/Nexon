@@ -23,10 +23,10 @@ public class UserManager : MonoBehaviour {
     [SerializeField]
     GameObject buttonGotoLogin = null, buttonPlay = null, buttonLogin = null, buttonGotoCreate = null, buttonCreate = null, buttonBack = null, panelLogin = null;
 
-    FirebaseApp app;
-    FirebaseAuth auth;
-    FirebaseUser user;
-    DatabaseReference database;
+    FirebaseApp app = null;
+    FirebaseAuth auth = null;
+    FirebaseUser user = null;
+    DatabaseReference database = null;
     // Get the root reference location of the database.
     public bool IsReady {        get; private set;    }
     public void GotoInitial()
@@ -152,7 +152,7 @@ public class UserManager : MonoBehaviour {
                 User us = new User() {
                     uid = user.UserId,
                     email = user.Email,
-                    displayName = "newUser",
+                    displayName = user.Email.Substring(0, user.Email.IndexOf('@')), // Nos quedamos de base con el string del email hasta el @ (user@gmail.com sería user)
                 };
                 FirebaseDatabase.DefaultInstance.GetReference( "/users/" + user.UserId ).SetRawJsonValueAsync( JsonUtility.ToJson(us) );
 
@@ -183,7 +183,7 @@ public class UserManager : MonoBehaviour {
                 user.DisplayName , user.UserId );
 
             if( user.IsEmailVerified )
-                SceneManager.LoadScene( 0 );
+                SceneManager.LoadScene( "Menu" );
         } );
     }
 
@@ -310,12 +310,15 @@ public class UserManager : MonoBehaviour {
             {
                 Debug.Log( "Signed out " + user.UserId );
             }
+
+            Step( 1 );
+
             user = auth.CurrentUser;
             if( signedIn )
             {
                 Debug.Log( "Signed in " + user.UserId );
-                Step( 1 );
                 buttonGotoLogin.SetActive( false );
+                buttonGotoCreate.SetActive( false );
             }
         }
 #if UNITY_EDITOR
@@ -345,7 +348,7 @@ public class User
     public int bestStreak;
     public int totalPoints;
     public float ratio;
-    public Friend[] friends;
+    //public Friend[] friends;
 
     public override string ToString()
     {

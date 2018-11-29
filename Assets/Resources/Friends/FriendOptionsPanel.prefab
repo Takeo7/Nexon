@@ -441,7 +441,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114843523879914472}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114810439392560626}
+        m_MethodName: RemoveFriend
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114041643125741950
@@ -702,7 +713,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114407989484979700}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114810439392560626}
+        m_MethodName: InviteToGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114219953198321638
@@ -921,6 +943,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 114810439392560626}
+        m_MethodName: OnChangeBloqueado
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 0
@@ -1128,8 +1161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75f7f8b029fcf93468c1432d0b101457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  favorito: {fileID: 0}
-  bloqueado: {fileID: 0}
+  toggleFavourite: {fileID: 114979036833535174}
+  toggleBlocked: {fileID: 114495012278248012}
 --- !u!114 &114843523879914472
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1228,6 +1261,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1812733534124254}
         m_MethodName: SetActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 114810439392560626}
+        m_MethodName: OnChangeFavorito
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

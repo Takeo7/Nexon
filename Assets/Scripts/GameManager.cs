@@ -1304,14 +1304,14 @@ public class GameManager : MonoBehaviour {
     public void NewGame()
     {
 		LM.ClearTexts();
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Game");
     }
     public void GoToMenu()
     {
 		LM.ClearTexts();
 		AD.SetIsGame(false);
 		pView.RPC("Disconnect", PhotonTargets.All);
-		SceneManager.LoadScene(0);
+		SceneManager.LoadScene("Menu");
     }
 
 

@@ -11247,6 +11247,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puntosT: {fileID: 995058642}
   fichasT: {fileID: 122296156}
+  botonEstadisticas: {fileID: 136733597}
+  botonAmigos: {fileID: 1993197968}
   puntosLimit: {fileID: 1091789481}
   fichasLimit: {fileID: 745037718}
   GameTypeTG: {fileID: 1671949823}

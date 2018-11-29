@@ -176,14 +176,20 @@ public class UserManager : MonoBehaviour {
             }
 
             user = task.Result;
-            PlayerPrefs.SetString( "EMAIL" , inputUsuario.text );
-            PlayerPrefs.SetString( "PASSWORD" , inputPassword.text );
+            PlayerPrefs.SetString( "Email" , inputUsuario.text );
+            PlayerPrefs.SetString( "Password" , inputPassword.text );
+            PlayerPrefs.SetString("UserName", user.DisplayName);
 
             Debug.LogFormat( "User signed in successfully: {0} ({1})" ,
                 user.DisplayName , user.UserId );
 
-            if( user.IsEmailVerified )
-                SceneManager.LoadScene( "Menu" );
+            if (user.IsEmailVerified)
+                SceneManager.LoadScene("Menu");
+            else
+            {
+                LogOut();
+                Step(1);
+            }
         } );
     }
 
@@ -209,7 +215,7 @@ public class UserManager : MonoBehaviour {
 
     private void LoginWithCredential()
     {
-        Credential credential = EmailAuthProvider.GetCredential( PlayerPrefs.GetString( "EMAIL" , inputUsuario.text ) , PlayerPrefs.GetString( "PASSWORD" , inputPassword.text ) );
+        Credential credential = EmailAuthProvider.GetCredential( PlayerPrefs.GetString( "Email" , inputUsuario.text ) , PlayerPrefs.GetString( "Password" , inputPassword.text ) );
         auth.SignInWithCredentialAsync( credential ).ContinueWith( task => {
             if( task.IsCanceled )
             {
@@ -232,8 +238,8 @@ public class UserManager : MonoBehaviour {
 
     public void LogOut()
     {
-        PlayerPrefs.DeleteKey( "EMAIL" );
-        PlayerPrefs.DeleteKey( "PASSWORD" );
+        PlayerPrefs.DeleteKey( "Email" );
+        PlayerPrefs.DeleteKey( "Password" );
         auth.SignOut();
     }
 
@@ -324,7 +330,7 @@ public class UserManager : MonoBehaviour {
 #if UNITY_EDITOR
         else
         {
-            if( auth.CurrentUser == null && user == null && PlayerPrefs.HasKey("EMAIL") )
+            if( auth.CurrentUser == null && user == null && PlayerPrefs.HasKey("Email") )
             {
                 LoginWithCredential();
             }

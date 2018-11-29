@@ -10,6 +10,8 @@ public class MenuManager : MonoBehaviour {
     public Toggle puntosT;
     public Toggle fichasT;
 
+    public GameObject botonEstadisticas, botonAmigos;
+
     public GameObject puntosLimit;
     public GameObject fichasLimit;
 
@@ -17,14 +19,20 @@ public class MenuManager : MonoBehaviour {
     public ToggleGroup PuntosLimitTG;
     public ToggleGroup FichasLimitTG;
     public ToggleGroup DificultadTG;
-
-	AdManager AD;
-
+#if !UNITY_EDITOR
+    AdManager AD;
     int ADCount;
+#endif
 
 	private void Start()
 	{
-		AD = AdManager.instance;
+        bool usuarioRegistrado = PlayerPrefs.HasKey("UserName");
+
+        botonAmigos.SetActive(usuarioRegistrado);
+        botonEstadisticas.SetActive(usuarioRegistrado);
+
+#if !UNITY_EDITOR
+        AD = AdManager.instance;
         ADCount = PlayerPrefs.GetInt("ADCount");
         ADCount++;
         if (ADCount >= 3)
@@ -36,6 +44,7 @@ public class MenuManager : MonoBehaviour {
         {
             PlayerPrefs.SetInt("ADCount", ADCount);
         }
+#endif
 	}
 
 	public void ChangeGameType()
@@ -87,7 +96,9 @@ public class MenuManager : MonoBehaviour {
         ChangeGameType();
         ChangeDificultad();
 		LanguageManager.instance.ClearTexts();
-		AD.SetIsGame(true);
+#if !UNITY_EDITOR
+        AD.SetIsGame(true);
+#endif
 		if (i == 0)
 			SceneManager.LoadScene ("Game");
 		else 

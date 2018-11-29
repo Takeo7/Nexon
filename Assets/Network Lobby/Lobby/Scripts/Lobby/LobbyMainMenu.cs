@@ -56,9 +56,18 @@ namespace Prototype.NetworkLobby
 
         public void OnClickCreateMatchmakingGame()
         {
+            string filter = "";
+
+            if (PlayerPrefs.GetInt("GameType") == 0)
+                filter = " " + "0" + PlayerPrefs.GetInt("PuntosLimit").ToString();
+            else if (PlayerPrefs.GetInt("GameType") == 1)
+                filter = " " + "1" + PlayerPrefs.GetInt("FichasLimit").ToString();
+
+            Debug.Log("Filter string => " + filter);
+
             lobbyManager.StartMatchMaker();
             lobbyManager.matchMaker.CreateMatch(
-                matchNameInput.text,
+                matchNameInput.text + filter,
                 (uint)lobbyManager.maxPlayers,
                 true,
 				"", "", "", 0, 0,

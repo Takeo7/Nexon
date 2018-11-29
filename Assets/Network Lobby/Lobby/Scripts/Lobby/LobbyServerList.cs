@@ -77,7 +77,15 @@ namespace Prototype.NetworkLobby
         {
             previousPage = currentPage;
             currentPage = page;
-			lobbyManager.matchMaker.ListMatches(page, 6, "", true, 0, 0, OnGUIMatchList);
+            string filter = "";
+
+            if (PlayerPrefs.GetInt("GameType") == 0)
+                filter = " " + "0" + PlayerPrefs.GetInt("PuntosLimit").ToString();
+            else if (PlayerPrefs.GetInt("GameType") == 1)
+                filter = " " + "1" + PlayerPrefs.GetInt("FichasLimit").ToString();
+
+            Debug.Log("Filter string => " + filter);
+            lobbyManager.matchMaker.ListMatches(page, 6, filter, true, 0, 0, OnGUIMatchList);
 		}
     }
 }

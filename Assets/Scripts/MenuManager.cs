@@ -76,6 +76,11 @@ public class MenuManager : MonoBehaviour {
         PlayerPrefs.SetInt("FichasLimit", t.transform.GetComponent<ToggleValue>().value);
     }
 
+    public void CargarEscena(string scene )
+    {
+        SceneManager.LoadScene(scene);
+    }
+
     public void Jugar(int i)
     {
         PlayerPrefs.SetInt("Online", i);

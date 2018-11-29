@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -40,4 +40,16 @@ MonoBehaviour:
   - Am Ende der Schicht explodieren alle "4"
   - "Wenn du explodierst, f\xFCge 1 zu den nahen Quadraten hinzu"
   - Wenn diese Felder auch 4 erreichen, werden sie in der Kette explodieren
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
   - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt

@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 14861896}
   - component: {fileID: 14861895}
   m_Layer: 5
-  m_Name: Sound (1)
+  m_Name: Nombre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,8 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cfc1f4019b7aed43a1f6e025432f484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myText: {fileID: 0}
-  myLine: 19
+  myText: {fileID: 14861896}
+  myLine: 30
 --- !u!114 &14861896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7330,7 +7330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myText: {fileID: 1188076139}
-  myLine: 21
+  myLine: 28
 --- !u!114 &1188076139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7623,7 +7623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myText: {fileID: 1260056769}
-  myLine: 21
+  myLine: 29
 --- !u!114 &1260056769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9670,7 +9670,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1346046480768472, guid: 7f6d85f1ea7e9c44aa844a3ebdce7868, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114724763580413766, guid: 7f6d85f1ea7e9c44aa844a3ebdce7868,
         type: 2}

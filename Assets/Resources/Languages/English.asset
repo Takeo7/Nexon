@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -40,4 +40,16 @@ MonoBehaviour:
   - At the end of the turn all the "4" explodes
   - When exploding, add 1 to the squeares that are close
   - If these squares also reach 4 they will explode in chain
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
+  - Win who gets first the designated score
   - Win who gets first the designated score

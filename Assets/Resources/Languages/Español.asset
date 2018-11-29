@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -41,3 +41,15 @@ MonoBehaviour:
   - Al explotar, suman 1 a las casillas que tienen cerca
   - "Si estas casillas tambi\xE9n llegan a 4 explotar\xE1n en cadena"
   - "Gana el que llegue primero a la puntuaci\xF3n designada"
+  - "Estad\xEDsticas"
+  - Amigos
+  - Cambiar nombre
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 

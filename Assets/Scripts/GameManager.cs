@@ -110,13 +110,13 @@ public class GameManager : MonoBehaviour {
         {
             if (PlayerPrefs.GetInt("GameType") == 0)
             {
-                //PhotonNetwork.ConnectUsingSettings(GameVersion + 0 + PlayerPrefs.GetInt("PuntosLimit"));
-                PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchName"));
+                PhotonNetwork.ConnectUsingSettings(GameVersion + 0 + PlayerPrefs.GetInt("PuntosLimit"));
+                //PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchId"));
             }
             else if(PlayerPrefs.GetInt("GameType") == 1)
             {
-                //PhotonNetwork.ConnectUsingSettings(GameVersion + 1 + PlayerPrefs.GetInt("FichasLimit"));
-                PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchName"));
+                PhotonNetwork.ConnectUsingSettings(GameVersion + 1 + PlayerPrefs.GetInt("FichasLimit"));
+                //PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchId"));
             }
             Debug.LogWarning("MatchName: " + PlayerPrefs.GetString("MatchName"));
             //PlayerPrefs.DeleteKey("MatchID");
@@ -126,6 +126,7 @@ public class GameManager : MonoBehaviour {
 
     void OnConnectedToMaster() // Funcion para saber si hemos conectado al Master
     {
+        Debug.LogWarning( "Nos conectamos al master" );
         PhotonNetwork.JoinLobby(); // Nos añadimos a la Lobby
     }
 
@@ -137,7 +138,9 @@ public class GameManager : MonoBehaviour {
     void OnJoinedLobby() // Si hemos conectado al Lobby -->
     {
         Debug.Log("OnJoinedLobby"); // Debug.Log para saber cuando se conecta al Lobby
-        PhotonNetwork.JoinRandomRoom(); // Conecta a una Room    
+        //PhotonNetwork.JoinRandomRoom(); // Conecta a una Room    
+        PhotonNetwork.JoinOrCreateRoom( PlayerPrefs.GetString( "MatchName" ) , null , null );
+
     }
 
     void OnPhotonRandomJoinFailed() // Si falla a conectar a una Room aleatoria

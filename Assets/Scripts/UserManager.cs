@@ -45,7 +45,7 @@ public class UserManager : MonoBehaviour {
     {
         if( user != null )
         {
-            SceneManager.LoadScene( "Amigos" ); //Cambiar esto y  poner menu
+            SceneManager.LoadScene( "Amigos" ); //TODO Cambiar esto y  poner menu
         }
         else
         {
@@ -156,6 +156,8 @@ public class UserManager : MonoBehaviour {
                 };
                 FirebaseDatabase.DefaultInstance.GetReference( "/users/" + user.UserId ).SetRawJsonValueAsync( JsonUtility.ToJson(us) );
 
+                user.UpdateUserProfileAsync( new UserProfile() { DisplayName = us.displayName } );
+
                 Step( 1 );
             }
         } );
@@ -182,14 +184,17 @@ public class UserManager : MonoBehaviour {
 
             Debug.LogFormat( "User signed in successfully: {0} ({1})" ,
                 user.DisplayName , user.UserId );
-
+#if !UNITY_EDITOR
             if (user.IsEmailVerified)
+#endif
                 SceneManager.LoadScene("Menu");
+#if !UNITY_EDITOR
             else
             {
                 LogOut();
                 Step(1);
             }
+#endif
         } );
     }
 
@@ -238,11 +243,16 @@ public class UserManager : MonoBehaviour {
 
     public void LogOut()
     {
+        PlayerPrefs.DeleteKey( "UserName" );
         PlayerPrefs.DeleteKey( "Email" );
         PlayerPrefs.DeleteKey( "Password" );
         auth.SignOut();
-    }
 
+        //Recargamos la escena login sin dejar rastro de los datos del usuario
+        Destroy(gameObject);
+        SceneManager.LoadScene( "Login" );
+    }
+    
     public void AddFriendByUId( string friendUId )
     {
         string currentUserUid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;

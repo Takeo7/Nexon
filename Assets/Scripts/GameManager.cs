@@ -111,14 +111,14 @@ public class GameManager : MonoBehaviour {
             if (PlayerPrefs.GetInt("GameType") == 0)
             {
                 //PhotonNetwork.ConnectUsingSettings(GameVersion + 0 + PlayerPrefs.GetInt("PuntosLimit"));
-                PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchID"));
+                PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchName"));
             }
             else if(PlayerPrefs.GetInt("GameType") == 1)
             {
                 //PhotonNetwork.ConnectUsingSettings(GameVersion + 1 + PlayerPrefs.GetInt("FichasLimit"));
-                PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchID"));
+                PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchName"));
             }
-            Debug.LogWarning("MatchID: " + PlayerPrefs.GetString("MatchID"));
+            Debug.LogWarning("MatchName: " + PlayerPrefs.GetString("MatchName"));
             //PlayerPrefs.DeleteKey("MatchID");
              // Conectamos usando los settings Default del Usuario
         }

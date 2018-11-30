@@ -4768,7 +4768,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: payno,haz que tu nombre actual salga aqui
+  m_Text: 
 --- !u!222 &662892817
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5293,6 +5293,7 @@ GameObject:
   - component: {fileID: 772117811}
   - component: {fileID: 772117813}
   - component: {fileID: 772117812}
+  - component: {fileID: 772117814}
   m_Layer: 5
   m_Name: Text (1)
   m_TagString: Untagged
@@ -5358,6 +5359,19 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 772117810}
   m_CullTransparentMesh: 0
+--- !u!114 &772117814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 772117810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cfc1f4019b7aed43a1f6e025432f484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myText: {fileID: 772117812}
+  myLine: 0
 --- !u!1001 &788538354
 Prefab:
   m_ObjectHideFlags: 0
@@ -7324,7 +7338,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1188076136}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cfc1f4019b7aed43a1f6e025432f484, type: 3}
   m_Name: 
@@ -7617,7 +7631,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1260056766}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cfc1f4019b7aed43a1f6e025432f484, type: 3}
   m_Name: 

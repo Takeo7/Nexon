@@ -158,6 +158,12 @@ namespace Prototype.NetworkLobby
 
         public delegate void BackButtonDelegate();
         public BackButtonDelegate backDelegate;
+
+        public void GoHomeButton()
+        {
+            Destroy( gameObject );
+            SceneManager.LoadScene( "Menu" );
+        }
         public void GoBackButton()
         {
             backDelegate();

@@ -1316,8 +1316,15 @@ public class GameManager : MonoBehaviour {
 		pView.RPC("Disconnect", PhotonTargets.All);
 
         UnityEngine.Networking.NetworkIdentity identity = FindObjectOfType<UnityEngine.Networking.NetworkIdentity>();
-        if ( identity != null )
-            identity.connectionToServer.Disconnect();
+        if( identity != null )
+        {
+            Prototype.NetworkLobby.LobbyManager lb = FindObjectOfType< Prototype.NetworkLobby.LobbyManager> ();
+            if( lb != null )
+            {
+                lb.StopHostClbk();
+            }
+            
+        }
 
 		SceneManager.LoadScene("Menu");
     }

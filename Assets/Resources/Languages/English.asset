@@ -67,3 +67,7 @@ MonoBehaviour:
   - Locked
   - Invite to match
   - Remove
+  - Enter
+  - Password
+  - Repeat password
+  - passwords don't match

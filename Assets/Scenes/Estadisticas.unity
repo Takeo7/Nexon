@@ -4641,6 +4641,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puntosT: {fileID: 0}
   fichasT: {fileID: 0}
+  botonEstadisticas: {fileID: 0}
+  botonAmigos: {fileID: 0}
   puntosLimit: {fileID: 0}
   fichasLimit: {fileID: 0}
   GameTypeTG: {fileID: 0}
@@ -4705,7 +4707,7 @@ Prefab:
     - target: {fileID: 224805641778274208, guid: 76f1d437699266449833a7df52b24d7b,
         type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 224805641778274208, guid: 76f1d437699266449833a7df52b24d7b,
         type: 2}
@@ -4789,6 +4791,31 @@ Prefab:
         type: 2}
       propertyPath: m_SizeDelta.x
       value: -110.00003
+      objectReference: {fileID: 0}
+    - target: {fileID: 224374807823860188, guid: 76f1d437699266449833a7df52b24d7b,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.015014648
+      objectReference: {fileID: 0}
+    - target: {fileID: 114280408605800262, guid: 76f1d437699266449833a7df52b24d7b,
+        type: 2}
+      propertyPath: m_Text
+      value: Puntos totales
+      objectReference: {fileID: 0}
+    - target: {fileID: 114280408605800262, guid: 76f1d437699266449833a7df52b24d7b,
+        type: 2}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114486305993921388, guid: 76f1d437699266449833a7df52b24d7b,
+        type: 2}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114486305993921388, guid: 76f1d437699266449833a7df52b24d7b,
+        type: 2}
+      propertyPath: m_FontData.m_MaxSize
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76f1d437699266449833a7df52b24d7b, type: 2}

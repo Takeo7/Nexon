@@ -165,6 +165,7 @@ public class UserManager : MonoBehaviour {
 
     public void AccederConEmail()
     {
+        Debug.Log( "Accediendo con Email" );
         auth.SignInWithEmailAndPasswordAsync( inputUsuario.text , inputPassword.text ).ContinueWith( task => {
             if( task.IsCanceled )
             {
@@ -178,12 +179,22 @@ public class UserManager : MonoBehaviour {
             }
 
             user = task.Result;
+            string userName = user.DisplayName;
+            if( string.IsNullOrEmpty( userName ) )
+            {
+                userName = inputUsuario.text.Substring( 0 , inputUsuario.text.IndexOf( '@' ) );
+
+                user.UpdateUserProfileAsync( new UserProfile() { DisplayName = userName } ).ContinueWith( task2 => {
+                    Debug.LogWarningFormat( "Canceled {0}, Faulted {1} , Completed {2}", task2.IsCanceled, task2.IsFaulted, task2.IsCompleted );
+                    Debug.LogWarning( "Actualizado el nickname" );
+                });
+            }
             PlayerPrefs.SetString( "Email" , inputUsuario.text );
             PlayerPrefs.SetString( "Password" , inputPassword.text );
-            PlayerPrefs.SetString("UserName", user.DisplayName);
-
-            Debug.LogFormat( "User signed in successfully: {0} ({1})" ,
-                user.DisplayName , user.UserId );
+            PlayerPrefs.SetString( "UserName", userName);
+            
+            Debug.LogFormat( "User signed in successfully: {0} ({1})  CustomUserName: {2}" ,
+                user.DisplayName , user.UserId , userName);
 #if !UNITY_EDITOR
             if (user.IsEmailVerified)
 #endif
@@ -237,7 +248,6 @@ public class UserManager : MonoBehaviour {
             Debug.LogFormat( "User signed in successfully: {0} ({1})" ,
                 user.DisplayName , user.UserId );
 
-            AddFriendByEmail( "payno.currante@gmail.com" );
         } );
     }
 
@@ -332,7 +342,7 @@ public class UserManager : MonoBehaviour {
             user = auth.CurrentUser;
             if( signedIn )
             {
-                Debug.Log( "Signed in " + user.UserId );
+                Debug.Log( "[AuthStateChange] Signed in "+user.DisplayName+" : " + user.UserId );
                 buttonGotoLogin.SetActive( false );
                 buttonGotoCreate.SetActive( false );
             }

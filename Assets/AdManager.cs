@@ -24,8 +24,10 @@ public class AdManager : MonoBehaviour {
 
 	private void Start()
 	{
-		Advertisement.Initialize("2804256");
+#if !UNITY_EDITOR
+        Advertisement.Initialize("2804256");
 		StartCoroutine("Ad");
+#endif
 	}
 	IEnumerator Ad()
 	{

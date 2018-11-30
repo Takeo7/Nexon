@@ -16,12 +16,42 @@ namespace Prototype.NetworkLobby
 		public void Populate(MatchInfoSnapshot match, LobbyManager lobbyManager, Color c)
 		{
             Debug.Log( "Populate: " + match.name );
-            PlayerPrefs.SetString( "MachName" , match.name );
-            serverInfoText.text = match.name;
+            PlayerPrefs.SetString( "MatchName" , match.name );
+
+            int pos = match.name.LastIndexOf( ' ' )+1;
+
+            string customName = match.name.Substring( 0, pos);
+
+            if( match.name[pos] == '0' )
+                customName += " P ";//Partida a PUNTOS
+            else
+            {
+                switch( LanguageManager.instance.languageSelected._language )
+                {
+                    case language.Deutsch:
+                        customName += " S ";//Partida a FICHAS
+                        break;
+                    case language.English:
+                        customName += " T ";//Partida a FICHAS
+                        break;
+                    case language.Español:
+                        customName += " F ";//Partida a FICHAS
+                        break;
+                    case language.Français:
+                        customName += " J ";//Partida a FICHAS
+                        break;
+                }
+            }
+
+            customName += " "+match.name.Substring( pos+1 );
+
+            serverInfoText.text = customName;
 
             slotInfo.text = match.currentSize.ToString() + "/" + match.maxSize.ToString(); ;
 
             NetworkID networkID = match.networkId;
+
+            lobbyManager.matchName = match.name;
             joinButton.onClick.RemoveAllListeners();
             joinButton.onClick.AddListener( () => { JoinMatch(networkID, lobbyManager); });
 
@@ -30,11 +60,6 @@ namespace Prototype.NetworkLobby
 
         void JoinMatch(NetworkID networkID, LobbyManager lobbyManager)
         {
-            if( !string.IsNullOrEmpty( lobbyManager.matchName ) )
-            {
-                PlayerPrefs.SetString( "MachName" , lobbyManager.matchName );
-                Debug.LogWarning( "Lobby Match Name: " + lobbyManager.matchName );
-            }
             PlayerPrefs.SetString("MatchID",((ulong)networkID).ToString());
 			lobbyManager.matchMaker.JoinMatch(networkID, "", "", "", 0, 0, lobbyManager.OnMatchJoined);
 			lobbyManager.backDelegate = lobbyManager.StopClientClbk;

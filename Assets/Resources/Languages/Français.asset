@@ -41,29 +41,29 @@ MonoBehaviour:
   - "En explosant, ajoutez 1 aux carr\xE9s proches"
   - "Si ces bo\xEEtes atteignent \xE9galement 4, elles vont exploser en cha\xEEne"
   - "Gagner qui arrive en premier au score indiqu\xE9"
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - statistiques
+  - Amis
+  - Renommer
+  - "Cr\xE9er un compte"
+  - Jouer
+  - nom du match
+  - "Cr\xE9er"
+  - Chercher un match
+  - Retour
+  - En Connectant
+  - Annuler
+  - "Pr\xE9c\xE9dent"
+  - Suivant
+  - "Aucun serveur trouv\xE9"
+  - Commence dans...
+  - Global
+  - Total de points
+  - "victoires / d\xE9faites"
+  - "meilleure s\xE9rie"
+  - invitations
+  - ajouter un ami
+  - envoyer demande
+  - Favori
+  - "bloqu\xE9"
+  - inviter au match
+  - "\xE9liminer"

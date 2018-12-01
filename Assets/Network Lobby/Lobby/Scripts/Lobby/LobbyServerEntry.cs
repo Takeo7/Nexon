@@ -16,7 +16,6 @@ namespace Prototype.NetworkLobby
 		public void Populate(MatchInfoSnapshot match, LobbyManager lobbyManager, Color c)
 		{
             Debug.Log( "Populate: " + match.name );
-            PlayerPrefs.SetString( "MatchName" , match.name );
 
             int pos = match.name.LastIndexOf( ' ' )+1;
 
@@ -53,13 +52,14 @@ namespace Prototype.NetworkLobby
 
             lobbyManager.matchName = match.name;
             joinButton.onClick.RemoveAllListeners();
-            joinButton.onClick.AddListener( () => { JoinMatch(networkID, lobbyManager); });
+            joinButton.onClick.AddListener( () => { JoinMatch(networkID, lobbyManager, match.name); });
 
             GetComponent<Image>().color = c;
         }
 
-        void JoinMatch(NetworkID networkID, LobbyManager lobbyManager)
+        void JoinMatch(NetworkID networkID, LobbyManager lobbyManager, string matchname)
         {
+            PlayerPrefs.SetString( "MatchName" , matchname );
             PlayerPrefs.SetString("MatchID",((ulong)networkID).ToString());
 			lobbyManager.matchMaker.JoinMatch(networkID, "", "", "", 0, 0, lobbyManager.OnMatchJoined);
 			lobbyManager.backDelegate = lobbyManager.StopClientClbk;

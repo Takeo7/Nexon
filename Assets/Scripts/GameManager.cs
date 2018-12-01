@@ -108,16 +108,9 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            if (PlayerPrefs.GetInt("GameType") == 0)
-            {
-                PhotonNetwork.ConnectUsingSettings(GameVersion + 0 + PlayerPrefs.GetInt("PuntosLimit"));
-                //PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchId"));
-            }
-            else if(PlayerPrefs.GetInt("GameType") == 1)
-            {
-                PhotonNetwork.ConnectUsingSettings(GameVersion + 1 + PlayerPrefs.GetInt("FichasLimit"));
-                //PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchId"));
-            }
+            
+            PhotonNetwork.ConnectUsingSettings(GameVersion + PlayerPrefs.GetInt( "GameType" ) + PlayerPrefs.GetInt("PuntosLimit"));
+            //PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchId"));
             Debug.LogWarning("MatchName: " + PlayerPrefs.GetString("MatchName"));
             //PlayerPrefs.DeleteKey("MatchID");
              // Conectamos usando los settings Default del Usuario
@@ -138,11 +131,21 @@ public class GameManager : MonoBehaviour {
     void OnJoinedLobby() // Si hemos conectado al Lobby -->
     {
         Debug.Log("OnJoinedLobby"); // Debug.Log para saber cuando se conecta al Lobby
-        //PhotonNetwork.JoinRandomRoom(); // Conecta a una Room    
-        PhotonNetwork.JoinOrCreateRoom( PlayerPrefs.GetString( "MatchName" ) , null , null );
+                                    //PhotonNetwork.JoinRandomRoom(); // Conecta a una Room    
 
+        RoomOptions roomOptions = new RoomOptions() {
+            CleanupCacheOnLeave = true,
+            IsOpen = true,
+            MaxPlayers = 2,
+            PublishUserId = true
+        };
+        PhotonNetwork.JoinOrCreateRoom( PlayerPrefs.GetString( "MatchName" ) , roomOptions , PhotonNetwork.lobby );
     }
 
+    void OnPhotonJoinRoomFailed()
+    {
+        Debug.Log( "OnPhotonJoinRoomFailed" );
+    }
     void OnPhotonRandomJoinFailed() // Si falla a conectar a una Room aleatoria
     {
         Debug.Log("OnPhotonRandomJoinFailed"); // Debug.Log para saber cuando falla en entrar a una Room

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.SceneManagement;
@@ -27,8 +25,7 @@ public class MenuManager : MonoBehaviour {
 	private void Start()
 	{
         bool usuarioRegistrado = PlayerPrefs.HasKey( "UserName" );
-        botonJugarOnline.SetActive( usuarioRegistrado );
-
+        
         usuarioRegistrado = false; //TODO Quitar esta linea
         botonAmigos.SetActive(usuarioRegistrado);
         botonEstadisticas.SetActive(usuarioRegistrado);
@@ -101,11 +98,25 @@ public class MenuManager : MonoBehaviour {
 
         AD.SetIsGame(true);
 
-		if (i == 0)
-			SceneManager.LoadScene ("Game");
-		else 
-		    SceneManager.LoadScene("Lobby");
+        if( i == 0 )
+            SceneManager.LoadScene( "Game" );
+        else
+        {
+            if( PlayerPrefs.HasKey( "UserName" ) )
+                SceneManager.LoadScene( "Lobby" );
+            else
+                SceneManager.LoadScene( "Login" );
+        }
 	
+    }
+
+    public void LogOut()
+    {
+        UserManager um = FindObjectOfType<UserManager>();
+        if( um != null )
+            um.LogOut();
+        else
+            Debug.LogError( "Algo salió mal. No se deslogueó" );
     }
 
 }

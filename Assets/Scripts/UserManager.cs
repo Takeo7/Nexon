@@ -43,6 +43,7 @@ public class UserManager : MonoBehaviour {
     {
         if( user != null )
         {
+            LanguageManager.instance.ClearTexts();
             SceneManager.LoadScene( "Amigos" ); //TODO Cambiar esto y  poner menu
         }
         else
@@ -168,6 +169,8 @@ public class UserManager : MonoBehaviour {
 
     public void AccederConEmail()
     {
+        errorText.myLine = 10; //Vacío
+        errorText.AskForLine();
         Debug.Log( "Accediendo con Email" );
         auth.SignInWithEmailAndPasswordAsync( inputUsuario.text , inputPassword.text ).ContinueWith( task => {
             if( task.IsCanceled )
@@ -178,6 +181,8 @@ public class UserManager : MonoBehaviour {
             if( task.IsFaulted )
             {
                 Debug.LogError( "SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception );
+                errorText.myLine = 60; //Usuario y/o contraseña no valido
+                errorText.AskForLine();
                 return;
             }
 
@@ -188,20 +193,23 @@ public class UserManager : MonoBehaviour {
                 userName = inputUsuario.text.Substring( 0 , inputUsuario.text.IndexOf( '@' ) );
 
                 user.UpdateUserProfileAsync( new UserProfile() { DisplayName = userName } ).ContinueWith( task2 => {
-                    Debug.LogWarningFormat( "Canceled {0}, Faulted {1} , Completed {2}", task2.IsCanceled, task2.IsFaulted, task2.IsCompleted );
+                    Debug.LogWarningFormat( "Canceled {0}, Faulted {1} , Completed {2}" , task2.IsCanceled , task2.IsFaulted , task2.IsCompleted );
                     Debug.LogWarning( "Actualizado el nickname" );
-                });
+                } );
             }
             PlayerPrefs.SetString( "Email" , inputUsuario.text );
             PlayerPrefs.SetString( "Password" , inputPassword.text );
-            PlayerPrefs.SetString( "UserName", userName);
-            
+            PlayerPrefs.SetString( "UserName" , userName );
+
             Debug.LogFormat( "User signed in successfully: {0} ({1})  CustomUserName: {2}" ,
-                user.DisplayName , user.UserId , userName);
+                user.DisplayName , user.UserId , userName );
 #if !UNITY_EDITOR
             if (user.IsEmailVerified)
 #endif
-                SceneManager.LoadScene("Menu");
+            {
+                LanguageManager.instance.ClearTexts();
+                SceneManager.LoadScene( "Menu" );
+            }
 #if !UNITY_EDITOR
             else
             {
@@ -241,6 +249,7 @@ public class UserManager : MonoBehaviour {
             Debug.LogFormat( "User signed in successfully: {0} ({1})" ,
                 user.DisplayName , user.UserId );
 
+            LanguageManager.instance.ClearTexts();
             SceneManager.LoadScene( "Menu" );
         } );
     }
@@ -276,63 +285,10 @@ public class UserManager : MonoBehaviour {
 
         //Recargamos la escena login sin dejar rastro de los datos del usuario
         Destroy(gameObject);
+        LanguageManager.instance.ClearTexts();
         SceneManager.LoadScene( "Login" );
     }
     
-    public void AddFriendByUId( string friendUId )
-    {
-        string currentUserUid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
-        Debug.Log( "CurrentUserId: " + currentUserUid );
-
-        Friend friend = new Friend() {
-            uid = friendUId ,
-            pending = true
-        };
-
-        Debug.Log( friend );
-        FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/friends/"+friendUId ).SetRawJsonValueAsync( JsonUtility.ToJson( friend ) );
-    }
-
-    public void AddFriendByEmail( string email )
-    {
-        FirebaseAuth.DefaultInstance.FetchProvidersForEmailAsync( email ).ContinueWith( task => {
-            if( task.IsCanceled )
-            {
-                //TODO
-                return;
-            }
-            if( task.IsFaulted )
-            {
-                //TODO
-                return;
-            }
-            //User with that email already registered. Can proceed to add as friend
-            FirebaseDatabase.DefaultInstance.GetReference( "users" ).GetValueAsync().ContinueWith( task2 => {
-                if( task2.IsFaulted )
-                {
-                    // Handle the error...
-                }
-                else if( task2.IsCompleted )
-                {
-                    DataSnapshot snapshot = task2.Result;
-                    
-                    User us = new User();
-                    // Do something with snapshot...
-                    foreach( var user in snapshot.Children )
-                    {
-                        us = JsonUtility.FromJson<User>( user.GetRawJsonValue() );
-                        Debug.LogWarning( us.displayName );
-                        if( us.email == email )
-                        {
-                            AddFriendByUId( user.Key );
-                            break;
-                        }
-                    }
-                }
-            } );
-        } );
-    }
-
     // Handle initialization of the necessary firebase modules:
     void InitializeFirebaseAuth()
     {

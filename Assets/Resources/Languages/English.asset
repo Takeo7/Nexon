@@ -73,7 +73,7 @@ MonoBehaviour:
   - passwords don't match
   - unverified email
   - resend email
-  - 
+  - invalid user and/or password
   - 
   - 
   - 

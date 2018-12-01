@@ -10,7 +10,7 @@ public class MenuManager : MonoBehaviour {
     public Toggle puntosT;
     public Toggle fichasT;
 
-    public GameObject botonEstadisticas, botonAmigos;
+    public GameObject botonEstadisticas, botonAmigos, botonJugarOnline;
 
     public GameObject puntosLimit;
     public GameObject fichasLimit;
@@ -26,8 +26,10 @@ public class MenuManager : MonoBehaviour {
 
 	private void Start()
 	{
-        bool usuarioRegistrado = PlayerPrefs.HasKey("UserName");
+        bool usuarioRegistrado = PlayerPrefs.HasKey( "UserName" );
+        botonJugarOnline.SetActive( usuarioRegistrado );
 
+        usuarioRegistrado = false; //TODO Quitar esta linea
         botonAmigos.SetActive(usuarioRegistrado);
         botonEstadisticas.SetActive(usuarioRegistrado);
 

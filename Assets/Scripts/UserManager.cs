@@ -49,7 +49,7 @@ public class UserManager : MonoBehaviour {
         {
             if( IsReady )
             {
-                //LoginAnonimo();
+                LoginAnonimo();
             }
         }
     }
@@ -82,7 +82,9 @@ public class UserManager : MonoBehaviour {
     {
         DontDestroyOnLoad(gameObject);
         //TODO Borrar el playerprefs
+#if UNITY_EDITOR
         PlayerPrefs.DeleteAll();
+#endif
         Debug.LogWarning( "Start" );
         Step( 1 );
 
@@ -196,11 +198,11 @@ public class UserManager : MonoBehaviour {
             
             Debug.LogFormat( "User signed in successfully: {0} ({1})  CustomUserName: {2}" ,
                 user.DisplayName , user.UserId , userName);
-#if !UNITY_EDITOR_
+#if !UNITY_EDITOR
             if (user.IsEmailVerified)
 #endif
                 SceneManager.LoadScene("Menu");
-#if !UNITY_EDITOR_
+#if !UNITY_EDITOR
             else
             {
                 PlayerPrefs.DeleteKey("UserName");
@@ -210,9 +212,15 @@ public class UserManager : MonoBehaviour {
                 //Step(1);
                 errorText.myLine = 58; //Email no verificado
                 errorText.AskForLine();
+                buttonReverificar.SetActive( true );
             }
 #endif
         } );
+    }
+
+    public void ReenviarEmailVerificacion()
+    {
+        user.SendEmailVerificationAsync();
     }
 
     public void LoginAnonimo()
@@ -232,6 +240,8 @@ public class UserManager : MonoBehaviour {
             user = task.Result;
             Debug.LogFormat( "User signed in successfully: {0} ({1})" ,
                 user.DisplayName , user.UserId );
+
+            SceneManager.LoadScene( "Menu" );
         } );
     }
 
@@ -346,7 +356,7 @@ public class UserManager : MonoBehaviour {
             //Step( 1 );
 
             user = auth.CurrentUser;
-            if( signedIn )
+            if( signedIn && !user.IsAnonymous)
             {
                 Debug.Log( "[AuthStateChange] Signed in "+user.DisplayName+" : " + user.UserId );
                 buttonGotoLogin.SetActive( false );

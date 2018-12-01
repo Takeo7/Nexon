@@ -17162,7 +17162,6 @@ GameObject:
   - component: {fileID: 2143397308}
   - component: {fileID: 2143397310}
   - component: {fileID: 2143397309}
-  - component: {fileID: 2143397311}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -17220,7 +17219,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Main Menu
+  m_Text: LOBBY
 --- !u!222 &2143397310
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17228,16 +17227,3 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2143397307}
   m_CullTransparentMesh: 0
---- !u!114 &2143397311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2143397307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cfc1f4019b7aed43a1f6e025432f484, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myText: {fileID: 2143397309}
-  myLine: 11

@@ -5,16 +5,17 @@ public class LanguageLine : MonoBehaviour {
 
 	public Text myText;
 	public byte myLine;
-	LanguageManager LM;
+	//LanguageManager LM;
 
 	private void Start()
 	{
-		LM = LanguageManager.instance;
+		//LM = LanguageManager.instance;
 		AskForLine();
-		LM.texts.Add(this);
+        LanguageManager.instance.texts.Add(this);
 	}
 	public void AskForLine()
 	{
-		myText.text = LM.ReturnLine(myLine);
+        if ( LanguageManager.instance != null )
+		myText.text = LanguageManager.instance.ReturnLine(myLine);
 	}
 }

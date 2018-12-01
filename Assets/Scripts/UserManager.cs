@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Firebase.Auth;
@@ -18,10 +16,10 @@ public class UserManager : MonoBehaviour {
     InputField inputUsuario = null, inputPassword = null, inputPassword2 = null;
 
     [SerializeField]
-    Text errorText = null;
+    LanguageLine errorText = null;
 
     [SerializeField]
-    GameObject buttonGotoLogin = null, buttonPlay = null, buttonLogin = null, buttonGotoCreate = null, buttonCreate = null, buttonBack = null, panelLogin = null;
+    GameObject buttonGotoLogin = null, buttonPlay = null, buttonLogin = null, buttonGotoCreate = null, buttonCreate = null, buttonBack = null, panelLogin = null, buttonReverificar = null;
 
     FirebaseApp app = null;
     FirebaseAuth auth = null;
@@ -74,7 +72,9 @@ public class UserManager : MonoBehaviour {
         buttonCreate.SetActive( step == 3 );
         inputPassword2.transform.parent.gameObject.SetActive( step == 3 );
 
-        errorText.text = "";
+        buttonReverificar.SetActive(false);
+        errorText.myLine = 10; //Texto Vacio
+        errorText.AskForLine();
     }
 
     // Use this for initialization
@@ -124,7 +124,8 @@ public class UserManager : MonoBehaviour {
         if( inputPassword.text != inputPassword2.text )
         {
             //TODO 
-            errorText.text = "Contraseñas no coinciden";
+            errorText.myLine = 57; //Las contraseñas no coinciden
+            errorText.AskForLine();
             return;
         }
 
@@ -195,15 +196,20 @@ public class UserManager : MonoBehaviour {
             
             Debug.LogFormat( "User signed in successfully: {0} ({1})  CustomUserName: {2}" ,
                 user.DisplayName , user.UserId , userName);
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR_
             if (user.IsEmailVerified)
 #endif
                 SceneManager.LoadScene("Menu");
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR_
             else
             {
-                LogOut();
-                Step(1);
+                PlayerPrefs.DeleteKey("UserName");
+                PlayerPrefs.DeleteKey("Email");
+                PlayerPrefs.DeleteKey("Password");
+                auth.SignOut();
+                //Step(1);
+                errorText.myLine = 58; //Email no verificado
+                errorText.AskForLine();
             }
 #endif
         } );
@@ -337,7 +343,7 @@ public class UserManager : MonoBehaviour {
                 Debug.Log( "Signed out " + user.UserId );
             }
 
-            Step( 1 );
+            //Step( 1 );
 
             user = auth.CurrentUser;
             if( signedIn )

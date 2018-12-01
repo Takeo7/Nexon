@@ -19,6 +19,10 @@ public class FriendsList : MonoBehaviour {
     public Transform SolicitudesContent {get { return solicitudesContent; } }
     private DatabaseReference db;
 
+    public void GoToHome()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene( "Menu" );
+    }
     void Start()
     {
         if( FirebaseAuth.DefaultInstance == null || FirebaseAuth.DefaultInstance.CurrentUser == null )

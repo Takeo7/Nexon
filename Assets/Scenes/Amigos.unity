@@ -3408,6 +3408,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myText: {fileID: 0}
   myLine: 0
+--- !u!114 &1066383808 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114624829055339240, guid: 0a9075fb4628e6c429fc0fc005844c32,
+    type: 2}
+  m_PrefabInternal: {fileID: 1066383793}
+  m_Script: {fileID: 575553740, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1144850017
 GameObject:
   m_ObjectHideFlags: 0
@@ -3485,8 +3491,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06f824298940fc543ada959a85e951fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emailAmigo: {fileID: 0}
-  popupAddFriend: {fileID: 0}
+  emailAmigo: {fileID: 1066383808}
+  popupAddFriend: {fileID: 1066383795}
   amigoPrefab: {fileID: 114782620157006766, guid: b80e0d9d2cff10447acd2b4b292b0924,
     type: 2}
   amigosContent: {fileID: 1640416127}
@@ -4944,9 +4950,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
-        m_Mode: 3
+      - m_Target: {fileID: 1144850020}
+        m_MethodName: GoToHome
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

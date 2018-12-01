@@ -44,7 +44,7 @@ public class UserManager : MonoBehaviour {
         if( user != null )
         {
             LanguageManager.instance.ClearTexts();
-            SceneManager.LoadScene( "Amigos" ); //TODO Cambiar esto y  poner menu
+            SceneManager.LoadScene( "Menu" ); //TODO Cambiar esto y  poner menu
         }
         else
         {

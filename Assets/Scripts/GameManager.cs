@@ -1326,7 +1326,7 @@ public class GameManager : MonoBehaviour {
             
         }
 
-		SceneManager.LoadScene("Menu");
+		//SceneManager.LoadScene("Menu");
     }
 
 

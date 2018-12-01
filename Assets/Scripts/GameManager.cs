@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour {
             MaxPlayers = 2,
             PublishUserId = true
         };
-        PhotonNetwork.JoinOrCreateRoom( PlayerPrefs.GetString( "MatchName" ) , roomOptions , PhotonNetwork.lobby );
+        PhotonNetwork.JoinOrCreateRoom( PlayerPrefs.GetString( "MatchName" ) , roomOptions , TypedLobby.Default );
     }
 
     void OnPhotonJoinRoomFailed()

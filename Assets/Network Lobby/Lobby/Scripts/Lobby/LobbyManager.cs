@@ -192,6 +192,7 @@ namespace Prototype.NetworkLobby
                  
         public void StopHostClbk()
         {
+            PhotonNetwork.Disconnect();
             if (_isMatchmaking)
             {
 				matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
@@ -264,6 +265,7 @@ namespace Prototype.NetworkLobby
             {
                 StopMatchMaker();
                 StopHost();
+                PhotonNetwork.Disconnect();
             }
         }
 

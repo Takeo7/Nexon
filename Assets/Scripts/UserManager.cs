@@ -343,14 +343,10 @@ public class User
     public string uid { get; set; }
     public string email;
     public string displayName;
-    public int bestStreak;
-    public int totalPoints;
-    public float ratio;
-    //public Friend[] friends;
-
+    
     public override string ToString()
     {
-        return System.String.Format("[{0}({1})] ==> BestStreak:{2} ==> TotalPoints:{3} ==> Win/Played: {4}",displayName, email, bestStreak, totalPoints, ratio);
+        return System.String.Format("[DisplayName: {0}  Email({1})]",displayName, email);
     }
 }
 

@@ -79,8 +79,7 @@ public class GameManager : MonoBehaviour {
 
 	LanguageManager LM;
 	SoundManager SM;
-	AdManager AD;
-
+	
     //DELETE FOR TEST
     public GameObject[] casillastest = new GameObject[3];
 
@@ -88,7 +87,6 @@ public class GameManager : MonoBehaviour {
     {
 		LM = LanguageManager.instance;
 		SM = SoundManager.instance;
-		AD = AdManager.instance;
 		SetOnlineGame();
 		Connect();
         SetGameType();
@@ -931,6 +929,9 @@ public class GameManager : MonoBehaviour {
                     endGame = true;
                     StopAllCoroutines();
                     EndGame(LM.ReturnLine(6));
+                    //TODO actualizar estos valores en todos los EndGame
+                    Estadisticas.SumaPartida( false );
+                    Estadisticas.SumaPuntos( player1Points );
                 }
             }
         }
@@ -995,20 +996,25 @@ public class GameManager : MonoBehaviour {
         {
             if (fichasMaximas <= 0)
             {
+                Estadisticas.SumaPuntos( player1Points );
+
                 if (player1Points > IAPoints)
                 {
                     StopAllCoroutines();
                     EndGame(LM.ReturnLine(4));
+                    Estadisticas.SumaPartida( true );
                 }
                 else if(IAPoints > player1Points)
                 {
                     StopAllCoroutines();
                     EndGame(LM.ReturnLine(5));
+                    Estadisticas.SumaPartida( false );
                 }
                 else
                 {
                     StopAllCoroutines();
                     EndGame("Empate");
+                    Estadisticas.SumaPartida( false );
                 }
             }
         }
@@ -1286,6 +1292,7 @@ public class GameManager : MonoBehaviour {
 
     void EndGame(string s)
     {
+        //TODO Actualizar las estadisticas aquí mejor
         endGame = true;
         StopCoroutine("IA");
         StopCoroutine("TurnTime");
@@ -1315,7 +1322,6 @@ public class GameManager : MonoBehaviour {
     public void GoToMenu()
     {
 		LM.ClearTexts();
-		AD.SetIsGame(false);
 		pView.RPC("Disconnect", PhotonTargets.All);
 
         UnityEngine.Networking.NetworkIdentity identity = FindObjectOfType<UnityEngine.Networking.NetworkIdentity>();

@@ -24,13 +24,16 @@ public class MenuManager : MonoBehaviour {
 
 	private void Start()
 	{
-        bool usuarioRegistrado = PlayerPrefs.HasKey( "UserName" );
-        
-        usuarioRegistrado = false; //TODO Quitar esta linea
+        bool usuarioRegistrado = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.IsEmailVerified;
+
+#if UNITY_EDITOR
+        usuarioRegistrado = true; //TODO eliminar
+#endif
         botonAmigos.SetActive(usuarioRegistrado);
         botonEstadisticas.SetActive(usuarioRegistrado);
 
         AD = AdManager.instance;
+        AD.SetIsGame( false );
 #if !UNITY_EDITOR
         ADCount = PlayerPrefs.GetInt("ADCount");
         ADCount++;
@@ -44,7 +47,7 @@ public class MenuManager : MonoBehaviour {
             PlayerPrefs.SetInt("ADCount", ADCount);
         }
 #endif
-	}
+    }
 
 	public void ChangeGameType()
     {

@@ -861,7 +861,6 @@ public class GameManager : MonoBehaviour {
     [PunRPC]
     public void AddPoints()
     {
-        Debug.LogWarning( "Adding Points" );
         if (OnlineGame == false)
         {
             if (MiTurno == true)

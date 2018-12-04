@@ -21,10 +21,10 @@ public class Estadisticas : MonoBehaviour {
     public static int PartidasTotales { get; private set; }
     public static int PartidasGanadas { get; private set; }
 
-    void Start()
+    IEnumerator Start()
     {
-        if( FirebaseAuth.DefaultInstance == null || FirebaseAuth.DefaultInstance.CurrentUser == null )
-            return;
+        while ( FirebaseAuth.DefaultInstance == null || FirebaseAuth.DefaultInstance.CurrentUser == null )
+            yield return null;
 
         currentUserUid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
         nombrePropio.text = FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
@@ -85,10 +85,12 @@ public class Estadisticas : MonoBehaviour {
         foreach( var e in args.Snapshot.Children )
         {
             i--;
-            nombresT[i].text = e.Child( "displayName" ).Value.ToString();
+            if( e.HasChild( "displayName" ) )
+                nombresT[i].text = e.Child( "displayName" ).Value.ToString();
 
-            float ratio;
-            float.TryParse( e.Child( "games/ratio" ).Value.ToString() , out ratio );
+            float ratio = 0;
+            if( e.HasChild( "games/ratio" ) )
+                float.TryParse( e.Child( "games/ratio" ).Value.ToString() , out ratio );
             
             puntosT[i].text = string.Format( "{0:0.00}" ,  ratio );
         }
@@ -119,8 +121,10 @@ public class Estadisticas : MonoBehaviour {
         foreach( var e in args.Snapshot.Children )
         {
             i--;
-            nombresT[i].text = e.Child( "displayName" ).Value.ToString();
-            puntosT[i].text = e.Child( "bestStreak" ).Value.ToString();
+            if( e.HasChild( "displayName" ) )
+                nombresT[i].text = e.Child( "displayName" ).Value.ToString();
+            if( e.HasChild( "bestStreak" ) )
+                puntosT[i].text = e.Child( "bestStreak" ).Value.ToString();
         }
         puntosPropios.text = RachaMejor.ToString();
     }
@@ -150,8 +154,10 @@ public class Estadisticas : MonoBehaviour {
         foreach( var e in args.Snapshot.Children )
         {
             i--;
-            nombresT[i].text = e.Child("displayName").Value.ToString();
-            puntosT[i].text = e.Child( "totalPoints" ).Value.ToString();
+            if( e.HasChild( "displayName" ) )
+                nombresT[i].text = e.Child("displayName").Value.ToString();
+            if( e.HasChild( "totalPoints" ) ) 
+                puntosT[i].text = e.Child( "totalPoints" ).Value.ToString();
         }
         puntosPropios.text = Puntuacion.ToString();
     }
@@ -159,7 +165,11 @@ public class Estadisticas : MonoBehaviour {
     public static void SumaPuntos( int puntos )
     {
         if( string.IsNullOrEmpty( currentUserUid ) )
-            return;
+        {
+            currentUserUid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+            if( string.IsNullOrEmpty( currentUserUid ) )
+                return;
+        }
 
         int oldValue = 0;
 
@@ -182,7 +192,11 @@ public class Estadisticas : MonoBehaviour {
     public static void MejorRacha( int cantidad )
     {
         if( string.IsNullOrEmpty( currentUserUid ) )
-            return;
+        {
+            currentUserUid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+            if( string.IsNullOrEmpty( currentUserUid ) )
+                return;
+        }
         FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/bestStreak" ).GetValueAsync().ContinueWith
             ( task => {
                 if( task.IsCanceled )
@@ -205,7 +219,11 @@ public class Estadisticas : MonoBehaviour {
     public static void SumaPartida( bool ganada )
     {
         if( string.IsNullOrEmpty( currentUserUid ) )
-            return;
+        {
+            currentUserUid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+            if( string.IsNullOrEmpty( currentUserUid ) )
+                return;
+        }
         FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/games" ).GetValueAsync().ContinueWith
             ( task => {
                 Debug.Log( "Sumando Partida" );
@@ -214,15 +232,16 @@ public class Estadisticas : MonoBehaviour {
                 
                 DataSnapshot ds = null;
                 int oldPlayed = 0;
+                Debug.Log( "Algo" );
                //if( task.Result.HasChild( "total" ) )
                     ds = task.Result.Child( "total" );
-
+                Debug.Log( "Otra cosa" );
                 if( ds != null && ds.Value != null )
                     int.TryParse((ds.Value.ToString()), out oldPlayed );
                 
                 FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/games/total" ).SetValueAsync( oldPlayed + 1  );
 
-                PartidasTotales = oldPlayed;
+                PartidasTotales = oldPlayed + 1;
 
                 ds = task.Result.Child( "won" );
                 
@@ -238,7 +257,7 @@ public class Estadisticas : MonoBehaviour {
                     FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/games/won" ).SetValueAsync( oldWon + 1 );
                 }
 
-                FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/games/ratio" ).SetValueAsync( PartidasGanadas / PartidasTotales );
+                FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/games/ratio" ).SetValueAsync( (100*PartidasGanadas / PartidasTotales) / 100f );
             }
             );
     }

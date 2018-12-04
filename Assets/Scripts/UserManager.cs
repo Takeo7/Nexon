@@ -44,7 +44,7 @@ public class UserManager : MonoBehaviour {
         if( user != null )
         {
             LanguageManager.instance.ClearTexts();
-            SceneManager.LoadScene( "Menu" ); //TODO Cambiar esto y  poner menu
+            SceneManager.LoadScene( "Menu" );
         }
         else
         {
@@ -82,11 +82,9 @@ public class UserManager : MonoBehaviour {
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-        //TODO Borrar el playerprefs
 #if UNITY_EDITOR
-        PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll(); //TODO Borrar el playerprefs
 #endif
-        Debug.LogWarning( "Start" );
         Step( 1 );
 
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith( task => {
@@ -295,7 +293,11 @@ public class UserManager : MonoBehaviour {
         Debug.Log( "Setting up Firebase Auth" );
         auth = FirebaseAuth.DefaultInstance;
         auth.StateChanged += AuthStateChanged;
+#if UNITY_EDITOR
+        AuthStateChanged( PlayerPrefs.HasKey( "Email" ) , null );
+#else
         AuthStateChanged( this , null );
+#endif
     }
 
     // Track state changes of the auth object.
@@ -322,7 +324,7 @@ public class UserManager : MonoBehaviour {
 #if UNITY_EDITOR
         else
         {
-            if( auth.CurrentUser == null && user == null && PlayerPrefs.HasKey("Email") )
+            if( auth.CurrentUser == null && user == null && (sender is bool) && (bool)sender  )
             {
                 LoginWithCredential();
             }

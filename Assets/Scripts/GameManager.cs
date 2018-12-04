@@ -861,6 +861,7 @@ public class GameManager : MonoBehaviour {
     [PunRPC]
     public void AddPoints()
     {
+        Debug.LogWarning( "Adding Points" );
         if (OnlineGame == false)
         {
             if (MiTurno == true)
@@ -896,6 +897,7 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
+                    Estadisticas.SumaPartida( true );
                     EndGame(LM.ReturnLine(4));
                 }
             }
@@ -907,6 +909,7 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
+                    Estadisticas.SumaPartida( false );
                     EndGame(LM.ReturnLine(6));
                 }
             }else if (MiTurno == true && PhotonNetwork.player.ID == 2)
@@ -917,6 +920,7 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
+                    Estadisticas.SumaPartida( true );
                     EndGame(LM.ReturnLine(4));
                 }
             }
@@ -928,10 +932,8 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
-                    EndGame(LM.ReturnLine(6));
-                    //TODO actualizar estos valores en todos los EndGame
                     Estadisticas.SumaPartida( false );
-                    Estadisticas.SumaPuntos( player1Points );
+                    EndGame(LM.ReturnLine(6));
                 }
             }
         }
@@ -996,25 +998,27 @@ public class GameManager : MonoBehaviour {
         {
             if (fichasMaximas <= 0)
             {
-                Estadisticas.SumaPuntos( player1Points );
 
                 if (player1Points > IAPoints)
                 {
                     StopAllCoroutines();
+                    if( OnlineGame )
+                        Estadisticas.SumaPartida( true );
                     EndGame(LM.ReturnLine(4));
-                    Estadisticas.SumaPartida( true );
                 }
                 else if(IAPoints > player1Points)
                 {
                     StopAllCoroutines();
+                    if( OnlineGame )
+                        Estadisticas.SumaPartida( false );
                     EndGame(LM.ReturnLine(5));
-                    Estadisticas.SumaPartida( false );
                 }
                 else
                 {
                     StopAllCoroutines();
+                    if( OnlineGame )
+                        Estadisticas.SumaPartida( false );
                     EndGame("Empate");
-                    Estadisticas.SumaPartida( false );
                 }
             }
         }
@@ -1048,17 +1052,24 @@ public class GameManager : MonoBehaviour {
     {
         exploding = true;
         bool checking = true;
+        int rachaExplosiones = -1;
         while (checking)
         {
             checking = CheckExplosions();
+            rachaExplosiones++;
             yield return new WaitForSeconds(0.5f);
         }
+
+
         if (OnlineGame == false)
         {
             EndOfTurn();
         }
         else if (OnlineGame == true)
         {
+            //Debug.LogWarning( "Hubo un total de " + rachaExplosiones + " explosiones." );
+            if ( MiTurno )
+                Estadisticas.MejorRacha( rachaExplosiones );
             pView.RPC("EndOfTurn", PhotonTargets.All);
         }
     }
@@ -1309,6 +1320,7 @@ public class GameManager : MonoBehaviour {
         }
         if (OnlineGame == true)
         {
+            Estadisticas.SumaPuntos( player1Points );
             PhotonNetwork.room.IsVisible = false;
         }
 		

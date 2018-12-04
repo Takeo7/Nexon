@@ -47,7 +47,7 @@ public class FriendsList : MonoBehaviour {
 
     private void OnFriendStatusChanged( object sender , ChildChangedEventArgs ev )
     {
-        Debug.LogWarning( "Ha cambiado el estado de mis amigos" );
+        //Debug.LogWarning( "Ha cambiado el estado de mis amigos" );
         GetFriends();
     }
 
@@ -98,7 +98,7 @@ public class FriendsList : MonoBehaviour {
                             f.displayName = snapshot2.Value.ToString();
 
                             friends.Add( f );
-                            Debug.LogWarning( friends[friends.Count - 1] );
+                            //Debug.LogWarning( friends[friends.Count - 1] );
 
                             if( (f.pending && idx <= solicitudesContent.childCount) || (!f.pending && idx <= amigosContent.childCount) )
                             {

@@ -106,7 +106,6 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            
             PhotonNetwork.ConnectUsingSettings(GameVersion + PlayerPrefs.GetInt( "GameType" ) + PlayerPrefs.GetInt("PuntosLimit"));
             //PhotonNetwork.ConnectUsingSettings(PlayerPrefs.GetString("MatchId"));
             Debug.LogWarning("MatchName: " + PlayerPrefs.GetString("MatchName"));
@@ -131,13 +130,16 @@ public class GameManager : MonoBehaviour {
         Debug.Log("OnJoinedLobby"); // Debug.Log para saber cuando se conecta al Lobby
                                     //PhotonNetwork.JoinRandomRoom(); // Conecta a una Room    
 
+        if( !PhotonNetwork.connected )
+            return;
         RoomOptions roomOptions = new RoomOptions() {
             CleanupCacheOnLeave = true,
             IsOpen = true,
             MaxPlayers = 2,
             PublishUserId = true
         };
-        PhotonNetwork.JoinOrCreateRoom( PlayerPrefs.GetString( "MatchName" ) , roomOptions , TypedLobby.Default );
+        PhotonNetwork.JoinOrCreateRoom( PlayerPrefs.GetString( "MatchID" ) , roomOptions , TypedLobby.Default );
+        Debug.LogWarning( "MatchID: " + PlayerPrefs.GetString( "MatchID" ) );
     }
 
     void OnPhotonJoinRoomFailed()
@@ -861,6 +863,7 @@ public class GameManager : MonoBehaviour {
     [PunRPC]
     public void AddPoints()
     {
+        Debug.Log( "Adding Points" );
         if (OnlineGame == false)
         {
             if (MiTurno == true)
@@ -897,7 +900,7 @@ public class GameManager : MonoBehaviour {
                     endGame = true;
                     StopAllCoroutines();
                     Estadisticas.SumaPartida( true );
-                    EndGame(LM.ReturnLine(4));
+                    EndGame(LM.ReturnLine(4)); //JUGADOR
                 }
             }
             else if(MiTurno == false && PhotonNetwork.player.ID == 1)
@@ -909,7 +912,7 @@ public class GameManager : MonoBehaviour {
                     endGame = true;
                     StopAllCoroutines();
                     Estadisticas.SumaPartida( false );
-                    EndGame(LM.ReturnLine(6));
+                    EndGame(LM.ReturnLine(6)); //ENEMIGO
                 }
             }else if (MiTurno == true && PhotonNetwork.player.ID == 2)
             {
@@ -920,7 +923,7 @@ public class GameManager : MonoBehaviour {
                     endGame = true;
                     StopAllCoroutines();
                     Estadisticas.SumaPartida( true );
-                    EndGame(LM.ReturnLine(4));
+                    EndGame(LM.ReturnLine(4)); //JUGADOR
                 }
             }
             else if (MiTurno == false && PhotonNetwork.player.ID == 2)
@@ -932,7 +935,7 @@ public class GameManager : MonoBehaviour {
                     endGame = true;
                     StopAllCoroutines();
                     Estadisticas.SumaPartida( false );
-                    EndGame(LM.ReturnLine(6));
+                    EndGame(LM.ReturnLine(6)); //ENEMIGO
                 }
             }
         }
@@ -1002,15 +1005,17 @@ public class GameManager : MonoBehaviour {
                 {
                     StopAllCoroutines();
                     if( OnlineGame )
+                    {
                         Estadisticas.SumaPartida( true );
-                    EndGame(LM.ReturnLine(4));
+                    }
+                    EndGame(LM.ReturnLine(4));//Jugador
                 }
                 else if(IAPoints > player1Points)
                 {
                     StopAllCoroutines();
                     if( OnlineGame )
                         Estadisticas.SumaPartida( false );
-                    EndGame(LM.ReturnLine(5));
+                    EndGame(LM.ReturnLine(5)); //IA
                 }
                 else
                 {
@@ -1049,10 +1054,20 @@ public class GameManager : MonoBehaviour {
     [PunRPC]
     public void UpdateRachaExplosiones(int rachaExplosiones)
     {
+        Debug.LogWarning( "He recibido una racha de " + rachaExplosiones );
         if( MiTurno )
             Estadisticas.MejorRacha( rachaExplosiones );
     }
-    
+    [PunRPC]
+    public void UpdatePuntosPartida( int puntos )
+    {
+        Estadisticas.SumaPuntos( puntos );
+    }
+    [PunRPC]
+    public void UpdateResultadoPartida(bool ganada )
+    {
+        Estadisticas.SumaPartida( ganada );
+    }
     IEnumerator CheckExplosionsCoroutine()
     {
         exploding = true;
@@ -1220,6 +1235,7 @@ public class GameManager : MonoBehaviour {
     [PunRPC]
     public void EndOfTurn()
     {
+        Debug.Log( "End of turn: " + PhotonNetwork.player.ID +" Online : "+OnlineGame );
         StopAllCoroutines();
         exploding = false;
         if (endGame == false && OnlineGame == true)
@@ -1243,6 +1259,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (endGame == false && OnlineGame == false && MiTurno == true)
         {
+            Debug.LogWarning( "Mi turno y finalizada" );
             StopCoroutine("TurnTime");
 			StartCoroutine("BarTime");
 			timeBar.fillAmount = 1;
@@ -1279,7 +1296,8 @@ public class GameManager : MonoBehaviour {
 			normalizedTime -= Time.deltaTime / duration;
 			yield return null;
 		}
-	}
+        Debug.LogWarning( "Fin cuenta atrás" );
+    }
 
     IEnumerator TurnTime()
     {
@@ -1290,8 +1308,9 @@ public class GameManager : MonoBehaviour {
             yield return new WaitForSeconds(1);
             time--;
             turnTimerText.text = time + "s";
-			//timeBar.fillAmount = time / 40f;
+            //timeBar.fillAmount = time / 40f;
         }
+        Debug.LogWarning( "Fin cuenta atrás de TurnTime"+endGame );
         nonTouch.SetActive(true);
         turnoText.text = "Turno IA";
         fichasPuestas = 0;
@@ -1301,14 +1320,14 @@ public class GameManager : MonoBehaviour {
         }
 		else if(endGame == false && OnlineGame == true)
 		{
-			NetCheckExplosions();
+			//NetCheckExplosions();
+            pView.RPC( "NetCheckExplosions" , PhotonTargets.All );
 		}
         StopCoroutine("TurnTime");
     }
 
     void EndGame(string s)
     {
-        //TODO Actualizar las estadisticas aquí mejor
         endGame = true;
         StopCoroutine("IA");
         StopCoroutine("TurnTime");
@@ -1325,7 +1344,6 @@ public class GameManager : MonoBehaviour {
         }
         if (OnlineGame == true)
         {
-            Estadisticas.SumaPuntos( player1Points );
             PhotonNetwork.room.IsVisible = false;
         }
 		

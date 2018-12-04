@@ -61,7 +61,12 @@ public class Estadisticas : MonoBehaviour {
 
         FirebaseDatabase.DefaultInstance.GetReference( "users/" + currentUserUid + "/games/ratio" ).GetValueAsync().ContinueWith( task => {
 
-            puntosPropios.text = string.Format( "{0:0.00}" , task.Result.Value.ToString());
+            float ratio = 0;
+            if ( task.Result != null && task.Result.Value != null)
+                float.TryParse( task.Result.Value.ToString() , out ratio );
+            int ratio2d = (int)(ratio * 100);
+
+            puntosPropios.text = string.Format( "{0:0.00}" , ratio2d / 100f);
         } );
     }
 
@@ -191,32 +196,29 @@ public class Estadisticas : MonoBehaviour {
 
     public static void MejorRacha( int cantidad )
     {
-        Debug.LogWarning( "Intentando Guardar Racha de " + cantidad );
         if( string.IsNullOrEmpty( currentUserUid ) )
         {
             currentUserUid = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
             if( string.IsNullOrEmpty( currentUserUid ) )
                 return;
         }
-        Debug.LogWarning( "Guardando Racha de " + cantidad );
         FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/bestStreak" ).GetValueAsync().ContinueWith
             ( task => {
-                Debug.LogWarning( "Consulta completada" );
-
+                
                 if( task.IsCanceled )
                     return;
                 DataSnapshot ds = task.Result;
                 int oldValue;
-                Debug.LogWarning( "Obteniendo valor anterior" );
+
                 if( ds != null && ds.Value != null )
                     int.TryParse( (ds.Value.ToString()) , out oldValue );
                 else
                     oldValue = 0;
                 RachaMejor = Mathf.Max( oldValue, cantidad) ;
-                Debug.LogWarning( "Racha anterior = "+oldValue + " y mejor racha = "+RachaMejor );
+                //Debug.LogWarning( "Racha anterior = "+oldValue + " y mejor racha = "+RachaMejor );
                 if( cantidad > oldValue )
                 {
-                    Debug.LogWarning( "Es mayor la nueva, de modo que se procede a guardar" );
+                    //Debug.LogWarning( "Es mayor la nueva, de modo que se procede a guardar" );
                     FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/bestStreak" ).SetValueAsync( cantidad );
                 }
 
@@ -234,19 +236,16 @@ public class Estadisticas : MonoBehaviour {
         }
         FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/games" ).GetValueAsync().ContinueWith
             ( task => {
-                Debug.Log( "Sumando Partida" );
                 if( task.IsCanceled )
                     return;
                 
                 DataSnapshot ds = null;
                 int oldPlayed = 0;
-                Debug.Log( "Algo" );
                //if( task.Result.HasChild( "total" ) )
                     ds = task.Result.Child( "total" );
-                Debug.Log( "Otra cosa" );
                 if( ds != null && ds.Value != null )
                     int.TryParse((ds.Value.ToString()), out oldPlayed );
-                
+
                 FirebaseDatabase.DefaultInstance.GetReference( "/users/" + currentUserUid + "/games/total" ).SetValueAsync( oldPlayed + 1  );
 
                 PartidasTotales = oldPlayed + 1;

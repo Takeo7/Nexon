@@ -31,7 +31,7 @@ public class AdManager : MonoBehaviour {
 	}
 	IEnumerator Ad()
 	{
-		Debug.Log("ye");
+		//Debug.Log("ye");
 		yield return new WaitForSeconds(60f);
 		if (isGame == false)
 		{

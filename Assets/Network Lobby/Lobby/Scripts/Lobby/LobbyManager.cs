@@ -192,7 +192,7 @@ namespace Prototype.NetworkLobby
                  
         public void StopHostClbk()
         {
-            PhotonNetwork.Disconnect();
+            //PhotonNetwork.Disconnect();
             if (_isMatchmaking)
             {
 				matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
@@ -209,6 +209,7 @@ namespace Prototype.NetworkLobby
 
         public void StopClientClbk()
         {
+            //PhotonNetwork.Disconnect();
             StopClient();
 
             if (_isMatchmaking)
@@ -364,6 +365,7 @@ namespace Prototype.NetworkLobby
 
         public IEnumerator ServerCountdownCoroutine()
         {
+            backButton.gameObject.SetActive(false);
             float remainingTime = prematchCountdown;
             int floorTime = Mathf.FloorToInt(remainingTime);
 

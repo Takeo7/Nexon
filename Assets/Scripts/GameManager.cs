@@ -1046,7 +1046,13 @@ public class GameManager : MonoBehaviour {
             StartCoroutine("CheckExplosionsCoroutine");
         }       
     }
-
+    [PunRPC]
+    public void UpdateRachaExplosiones(int rachaExplosiones)
+    {
+        if( MiTurno )
+            Estadisticas.MejorRacha( rachaExplosiones );
+    }
+    
     IEnumerator CheckExplosionsCoroutine()
     {
         exploding = true;
@@ -1060,16 +1066,16 @@ public class GameManager : MonoBehaviour {
         }
 
 
+        Debug.LogWarning( "Hubo un total de " + rachaExplosiones + " explosiones. Tu modo es "+(OnlineGame?"Online":"Offline")+ " y es el turno "+(MiTurno?"tuyo":"del oponente") );
+
         if (OnlineGame == false)
         {
             EndOfTurn();
         }
         else if (OnlineGame == true)
         {
-            //Debug.LogWarning( "Hubo un total de " + rachaExplosiones + " explosiones." );
-            if ( MiTurno )
-                Estadisticas.MejorRacha( rachaExplosiones );
-            pView.RPC("EndOfTurn", PhotonTargets.All);
+            pView.RPC( "UpdateRachaExplosiones" , PhotonTargets.All , rachaExplosiones );
+            pView.RPC( "EndOfTurn", PhotonTargets.All);
         }
     }
 

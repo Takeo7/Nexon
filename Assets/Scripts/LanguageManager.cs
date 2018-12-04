@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LanguageManager : MonoBehaviour {
 
@@ -16,9 +17,27 @@ public class LanguageManager : MonoBehaviour {
 			instance = this;
 		}
 	}
-	#endregion
 
-	public Language[] languageInfo;
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
+    }
+
+    private void SceneManager_sceneLoaded( Scene arg0 , LoadSceneMode arg1 )
+    {
+        ClearTexts();
+        if( arg0.name == "Menu" )
+            AdManager.instance.isGame = false;
+        else
+            AdManager.instance.isGame = true;
+    }
+    #endregion
+
+    public Language[] languageInfo;
 	public Language languageSelected;
 
 	public List<LanguageLine> texts;

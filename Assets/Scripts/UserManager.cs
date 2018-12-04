@@ -27,6 +27,27 @@ public class UserManager : MonoBehaviour {
     DatabaseReference database = null;
     // Get the root reference location of the database.
     public bool IsReady {        get; private set;    }
+
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if( inputPassword.isFocused && Input.GetKeyDown( KeyCode.Tab ) )
+        {
+            if ( inputPassword2.IsActive())
+                inputPassword2.Select();
+
+        }
+        if( inputUsuario.isFocused && Input.GetKeyDown( KeyCode.Tab ) )
+        {
+            inputPassword.Select();
+        }
+        if( Input.GetKeyDown( KeyCode.KeypadEnter) || Input.GetKeyDown( KeyCode.Return ) )
+        {
+            GotoLogin();
+        }
+    }
+#endif
+
     public void GotoInitial()
     {
         Step( 1 );

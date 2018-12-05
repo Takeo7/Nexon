@@ -164,6 +164,8 @@ namespace Prototype.NetworkLobby
 
         public void GoHomeButton()
         {
+            LobbyManager.singleton = null;
+            LobbyManager.s_Singleton = null;
             Destroy( gameObject );
             SceneManager.LoadScene( "Menu" );
         }

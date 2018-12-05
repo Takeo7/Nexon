@@ -100,9 +100,12 @@ public class UserManager : MonoBehaviour {
     {
         DontDestroyOnLoad(gameObject);
 #if UNITY_EDITOR
-        PlayerPrefs.DeleteAll(); //TODO Borrar el playerprefs
+        PlayerPrefs.DeleteAll(); //TODO Borrar el delete playerprefs
 #endif
         Step( 1 );
+
+        Firebase.Messaging.FirebaseMessaging.TokenReceived += FirebaseMessaging_TokenReceived;
+        Firebase.Messaging.FirebaseMessaging.MessageReceived += FirebaseMessaging_MessageReceived;
 
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith( task => {
             var dependencyStatus = task.Result;
@@ -135,6 +138,16 @@ public class UserManager : MonoBehaviour {
                 // Firebase Unity SDK is not safe to use here.
             }
         } );
+    }
+
+    private void FirebaseMessaging_TokenReceived( object sender , Firebase.Messaging.TokenReceivedEventArgs token )
+    {
+        Debug.Log( "Received Registration Token: " + token.Token );
+    }
+
+    private void FirebaseMessaging_MessageReceived( object sender , Firebase.Messaging.MessageReceivedEventArgs e )
+    {
+        Debug.Log( "Received a new message from: " + e.Message.From );
     }
 
     public void RegistrarEmail()

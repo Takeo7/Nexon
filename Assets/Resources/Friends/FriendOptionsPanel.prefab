@@ -1163,6 +1163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toggleFavourite: {fileID: 114979036833535174}
   toggleBlocked: {fileID: 114495012278248012}
+  lobbyPrefab: {fileID: 114142334146050462, guid: 1c54b5445874fea409ecd61de57fd8ee,
+    type: 2}
 --- !u!114 &114843523879914472
 MonoBehaviour:
   m_ObjectHideFlags: 1

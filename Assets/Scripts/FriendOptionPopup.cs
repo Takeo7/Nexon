@@ -56,9 +56,9 @@ public class FriendOptionPopup : MonoBehaviour {
         ulong networkId = 0;
 
         if( PlayerPrefs.GetInt( "GameType" ) == 0 )
-            matchName += " 0" + PlayerPrefs.GetInt( "PuntosLimit" ).ToString();
+            matchName += " 0" + PlayerPrefs.GetInt( "PuntosLimit", 30 ).ToString();
         else
-            matchName += " 1" + PlayerPrefs.GetInt( "FichasLimit" ).ToString();
+            matchName += " 1" + PlayerPrefs.GetInt( "FichasLimit", 30 ).ToString();
 
         Debug.Log( "Filter string => " + matchName );
         PlayerPrefs.SetString( "MatchName" , matchName );

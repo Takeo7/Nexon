@@ -31,6 +31,12 @@ public class NotificationsManager : MonoBehaviour {
     void Start () {
         DontDestroyOnLoad( gameObject );
 
+        PlayerPrefs.SetInt( "Online" , 1 );
+        PlayerPrefs.SetString( "UserName" , "" );
+        PlayerPrefs.SetInt( "GameType",0 );
+        PlayerPrefs.SetInt( "PuntosLimit" , 30 );
+        PlayerPrefs.SetInt( "FichasLimit" , 30 );
+
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
         currentId = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId;
         Firebase.Database.FirebaseDatabase.DefaultInstance.RootReference.Child( "matches/"+currentId ).ValueChanged += NotificationsManager_ValueChanged;
@@ -65,7 +71,7 @@ public class NotificationsManager : MonoBehaviour {
                 }
                 else
                 {
-                    Firebase.Database.FirebaseDatabase.DefaultInstance.RootReference.Child( "matches/" + currentId ).RemoveValueAsync();
+                    EliminarNotificacion();
                 }
             } );
     }
@@ -104,10 +110,13 @@ public class NotificationsManager : MonoBehaviour {
         Firebase.Database.FirebaseDatabase.DefaultInstance.RootReference.Child( "matches/" + friendID ).SetValueAsync( match );
     }
 
-
-    public void OnClicNotificacion()
+    public void EliminarNotificacion()
     {
         Firebase.Database.FirebaseDatabase.DefaultInstance.RootReference.Child( "matches/" + currentId ).RemoveValueAsync();
+    }
+    public void OnClicNotificacion()
+    {
+        EliminarNotificacion();
         StartCoroutine( HideNotification() );
         Debug.Log( "Net Id = " + netID );
         Debug.Log( "MatchName = " + matchName );

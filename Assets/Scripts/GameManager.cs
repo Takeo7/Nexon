@@ -83,6 +83,8 @@ public class GameManager : MonoBehaviour {
     //DELETE FOR TEST
     public GameObject[] casillastest = new GameObject[3];
 
+    private bool fromGameToMenu = false;
+
     private void Start()
     {
 		LM = LanguageManager.instance;
@@ -91,7 +93,9 @@ public class GameManager : MonoBehaviour {
 		Connect();
         SetGameType();
         SetMaxLimits();
-        ShowPoints(false);  
+        ShowPoints(false);
+
+        SceneManager.sceneLoaded += CheckSceneLoaded;
     }
 
     #region Network
@@ -1354,25 +1358,45 @@ public class GameManager : MonoBehaviour {
 		LM.ClearTexts();
         SceneManager.LoadScene("Game");
     }
-    public void GoToMenu()
+
+    public void GoToLobby()
     {
-		LM.ClearTexts();
-		pView.RPC("Disconnect", PhotonTargets.All);
+        LM.ClearTexts();
+        pView.RPC("Disconnect", PhotonTargets.All);
 
         UnityEngine.Networking.NetworkIdentity identity = FindObjectOfType<UnityEngine.Networking.NetworkIdentity>();
-        if( identity != null )
+        if (identity != null)
         {
-            Prototype.NetworkLobby.LobbyManager lb = FindObjectOfType< Prototype.NetworkLobby.LobbyManager> ();
-            if( lb != null )
-            {
+            Prototype.NetworkLobby.LobbyManager lb = FindObjectOfType<Prototype.NetworkLobby.LobbyManager>();
+            if (lb != null)
                 lb.StopHostClbk();
-            }
-            
-        }
 
-		//SceneManager.LoadScene("Menu");
+        }
     }
 
+    public void GoToMenu()
+    {
+        if (OnlineGame)
+        {
+            fromGameToMenu = true;
+            GoToLobby();
+        }
+        else
+        {
+            LM.ClearTexts();
+            SceneManager.LoadScene("Menu");
+        }
+
+    }
+
+    private void CheckSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.Equals("Lobby") && fromGameToMenu)
+        {
+            fromGameToMenu = false;
+            Prototype.NetworkLobby.LobbyManager.s_Singleton.GoHomeButton();
+        }
+    }
 
     enum DificultadIA { Easy, Mid, Hard}
     public enum GameType { Puntuacion, Fichas}

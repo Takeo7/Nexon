@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 22455824}
   - component: {fileID: 22200190}
   - component: {fileID: 11453288}
+  - component: {fileID: 114705483512852226}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -116,6 +117,7 @@ GameObject:
   - component: {fileID: 22283698}
   - component: {fileID: 11472042}
   - component: {fileID: 11405868}
+  - component: {fileID: 114952122972082308}
   m_Layer: 5
   m_Name: WaitingPlayers
   m_TagString: Untagged
@@ -289,6 +291,7 @@ GameObject:
   - component: {fileID: 22439062}
   - component: {fileID: 22231786}
   - component: {fileID: 11472370}
+  - component: {fileID: 114652600840586160}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -1681,3 +1684,42 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 155390}
   m_IsPrefabAsset: 1
+--- !u!114 &114652600840586160
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cfc1f4019b7aed43a1f6e025432f484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myText: {fileID: 11472370}
+  myLine: 61
+--- !u!114 &114705483512852226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 109404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cfc1f4019b7aed43a1f6e025432f484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myText: {fileID: 11453288}
+  myLine: 62
+--- !u!114 &114952122972082308
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cfc1f4019b7aed43a1f6e025432f484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myText: {fileID: 11472370}
+  myLine: 61

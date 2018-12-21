@@ -1346,9 +1346,14 @@ public class GameManager : MonoBehaviour {
         {
             winnerText.text = s + "\n"+ LM.ReturnLine(17);
         }
+
         if (OnlineGame == true)
         {
             PhotonNetwork.room.IsVisible = false;
+        }
+        else
+        {
+            GameObject.Find("lobbyButton").SetActive(false);
         }
 		
     }

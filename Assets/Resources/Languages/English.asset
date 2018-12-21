@@ -15,7 +15,7 @@ MonoBehaviour:
   lines:
   - Difficulty
   - Points
-  - Tokens
+  - chips
   - 'Objective Points:'
   - Player
   - IA
@@ -26,8 +26,8 @@ MonoBehaviour:
   - 
   - Main Menu
   - Rematch
-  - 'Objective Tokens:'
-  - 'Tokens Left:'
+  - 'target chips:'
+  - 'chips Left:'
   - Explosions
   - Tie
   - WON!
@@ -74,7 +74,7 @@ MonoBehaviour:
   - unverified email
   - resend email
   - invalid user and/or password
-  - 
+  - waiting for players
   - 
   - 
   - 

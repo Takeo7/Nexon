@@ -32,7 +32,7 @@ public class NotificationsManager : MonoBehaviour {
         DontDestroyOnLoad( gameObject );
 
         PlayerPrefs.SetInt( "Online" , 1 );
-        PlayerPrefs.SetString( "UserName" , "" );
+        //PlayerPrefs.SetString( "UserName" , "" );
         PlayerPrefs.SetInt( "GameType",0 );
         PlayerPrefs.SetInt( "PuntosLimit" , 30 );
         PlayerPrefs.SetInt( "FichasLimit" , 30 );

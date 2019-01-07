@@ -1389,6 +1389,7 @@ public class GameManager : MonoBehaviour {
         else
         {
             LM.ClearTexts();
+            PhotonNetwork.Disconnect();
             SceneManager.LoadScene("Menu");
         }
 

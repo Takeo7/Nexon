@@ -266,6 +266,7 @@ namespace Prototype.NetworkLobby
 			base.OnDestroyMatch(success, extendedInfo);
 			if (_disconnectServer)
             {
+                // Debug.Log("OnDestroyMatch! -> " + PlayerPrefs.GetString("UserName"));
                 StopMatchMaker();
                 StopHost();
                 PhotonNetwork.Disconnect();
@@ -424,6 +425,8 @@ namespace Prototype.NetworkLobby
 
         public override void OnClientDisconnect(NetworkConnection conn)
         {
+            // Debug.Log("OnClientDisconnect! -> " + PlayerPrefs.GetString("UserName"));
+            PhotonNetwork.Disconnect();
             base.OnClientDisconnect(conn);
             ChangeTo(mainMenuPanel);
         }

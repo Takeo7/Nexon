@@ -903,6 +903,8 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
+                    // Debug.LogWarning("Sumo " + player1Points + " puntos al jugador " + PlayerPrefs.GetString("UserName"));
+                    Estadisticas.SumaPuntos(player1Points);
                     Estadisticas.SumaPartida( true );
                     EndGame(LM.ReturnLine(4)); //JUGADOR
                 }
@@ -915,6 +917,8 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
+                    // Debug.LogWarning("Sumo " + player1Points + " puntos al jugador " + PlayerPrefs.GetString("UserName"));
+                    Estadisticas.SumaPuntos(player1Points);
                     Estadisticas.SumaPartida( false );
                     EndGame(LM.ReturnLine(6)); //ENEMIGO
                 }
@@ -926,6 +930,8 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
+                    // Debug.LogWarning("Sumo " + player1Points + " puntos al jugador " + PlayerPrefs.GetString("UserName"));
+                    Estadisticas.SumaPuntos(player1Points);
                     Estadisticas.SumaPartida( true );
                     EndGame(LM.ReturnLine(4)); //JUGADOR
                 }
@@ -938,6 +944,8 @@ public class GameManager : MonoBehaviour {
                 {
                     endGame = true;
                     StopAllCoroutines();
+                    // Debug.LogWarning("Sumo " + player1Points + " puntos al jugador " + PlayerPrefs.GetString("UserName"));
+                    Estadisticas.SumaPuntos(player1Points);
                     Estadisticas.SumaPartida( false );
                     EndGame(LM.ReturnLine(6)); //ENEMIGO
                 }

@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour {
     //DELETE FOR TEST
     public GameObject[] casillastest = new GameObject[3];
 
-    private bool fromGameToMenu = false;
+    public bool fromGameToMenu = false;
 
     private void Start()
     {
@@ -1374,6 +1374,10 @@ public class GameManager : MonoBehaviour {
 
     public void GoToLobby()
     {
+        GameObject winner = GameObject.Find("Winner");
+        if (winner != null)
+            winner.SetActive(false);
+
         LM.ClearTexts();
         pView.RPC("Disconnect", PhotonTargets.All);
 

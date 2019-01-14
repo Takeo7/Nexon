@@ -120,6 +120,9 @@ namespace Prototype.NetworkLobby
 
         public void ChangeTo(RectTransform newPanel)
         {
+            if (newPanel != null && GameManager.instance != null && GameManager.instance.fromGameToMenu && newPanel == mainMenuPanel)
+                return;
+
             if (currentPanel != null)
             {
                 currentPanel.gameObject.SetActive(false);

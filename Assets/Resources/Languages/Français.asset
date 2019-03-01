@@ -29,7 +29,7 @@ MonoBehaviour:
   - 'Jetons d''objectif:'
   - "Jetons laiss\xE9s:"
   - Des explosions
-  - Cravate
+  - "LA D\xC9FAITE!"
   - "A GAGN\xC9!"
   - Options
   - Son
@@ -40,7 +40,7 @@ MonoBehaviour:
   - "\xC0 la fin du quart, tous les \"4\" explosent"
   - "En explosant, ajoutez 1 aux carr\xE9s proches"
   - "Si ces bo\xEEtes atteignent \xE9galement 4, elles vont exploser en cha\xEEne"
-  - "Gagner qui arrive en premier au score indiqu\xE9"
+  - Obtenez le meilleur score possible en 3 minutes
   - statistiques
   - Amis
   - Renommer

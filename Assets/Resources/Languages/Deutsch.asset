@@ -29,8 +29,8 @@ MonoBehaviour:
   - 'Zielchips:'
   - 'Verbleibende Spielmarke:'
   - Explosionen
-  - Zeichnen
-  - ER HAT GEWONNEN!
+  - NIEDERLAGE!
+  - SIEG!
   - Optionen
   - Sound
   - Sprache
@@ -40,7 +40,7 @@ MonoBehaviour:
   - Am Ende der Schicht explodieren alle "4"
   - "Wenn du explodierst, f\xFCge 1 zu den nahen Quadraten hinzu"
   - Wenn diese Felder auch 4 erreichen, werden sie in der Kette explodieren
-  - Gewinnen Sie, wer zuerst an der benannten Punktzahl ankommt
+  - "Holen Sie sich die h\xF6chste Punktzahl in 3 Minuten"
   - Statistiken
   - Freunde
   - "Namen \xE4ndern"

@@ -29,7 +29,7 @@ MonoBehaviour:
   - 'target chips:'
   - 'chips Left:'
   - Explosions
-  - Tie
+  - DEFEAT!
   - WON!
   - Options
   - Sound
@@ -40,7 +40,7 @@ MonoBehaviour:
   - At the end of the turn all the "4" explodes
   - When exploding, add 1 to the squeares that are close
   - If these squares also reach 4 they will explode in chain
-  - Win who gets first the designated score
+  - Get the highest score you can in 3 minutes
   - Estatistics
   - Friends
   - Rename

@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4490550397819206}
   - component: {fileID: 198118041714210530}
   - component: {fileID: 199067972840540996}
-  - component: {fileID: 114291115969901862}
   m_Layer: 0
   m_Name: ExplosionDelNumero4
   m_TagString: Untagged
@@ -73,18 +72,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &114291115969901862
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1109809629015456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 023c7ffe8639a47489a36801c79194ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  x: 3
 --- !u!198 &198118041714210530
 ParticleSystem:
   m_ObjectHideFlags: 1

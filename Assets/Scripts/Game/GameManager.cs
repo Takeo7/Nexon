@@ -21,6 +21,9 @@ namespace Nexon
 
         [SerializeField] private GameObject panelBloqueo;
         [SerializeField] private GameObject panelCuentaAtras;
+        [SerializeField] private GameObject panelVictoria;
+
+        [SerializeField] private Button botonVolverAlMenu;
 
         [SerializeField] private ParticleSystem[] particulas;
 
@@ -91,11 +94,7 @@ namespace Nexon
             GetComponent<Canvas>().worldCamera = Camera.main;
             ActualizarTiempo( tiempoMaximoPartida );
 
-            Debug.LogWarning( NetworkServer.connections.Count );
-
-            Debug.LogWarning( jugador.Count );
-
-            yield return new WaitUntil( () => jugador.Count == NetworkServer.connections.Count );
+            //yield return new WaitForSeconds(1f); // new WaitUntil( () => jugador.Count == NetworkServer.connections.Count );
 
             ActualizarPuntuacion();
             ActualizarVidas();
@@ -134,6 +133,9 @@ namespace Nexon
                 {1, 10 },
                 {0, 4 }
             };
+
+            // TODO Obtener el mismo seed para 2 jugadores emparejados
+            //Random.InitState( 42 );
 
             for( int i = 0 ; i < lengthX ; i++ )
             {
@@ -175,7 +177,7 @@ namespace Nexon
         #region Logic
         public void ActualizarVidas()
         {
-            if( jugadorLocal.Vidas < 3 && vidasDisponibles[jugadorLocal.Vidas].activeSelf )
+            if( jugadorLocal.Vidas < 3 && jugadorLocal.Vidas >= 0 && vidasDisponibles[jugadorLocal.Vidas].activeSelf )
             {
                 vidasDisponibles[jugadorLocal.Vidas].SetActive( false );
                 ParticleSystem partic = Instantiate( particulas[0] , null );
@@ -184,7 +186,7 @@ namespace Nexon
                 Destroy( partic.gameObject , 3f );
             }
 
-            if( jugadorRemoto.Vidas < 3 && vidasDisponibles[3+jugadorRemoto.Vidas].activeSelf )
+            if( jugadorRemoto.Vidas < 3 && jugadorRemoto.Vidas >= 0 && vidasDisponibles[3+jugadorRemoto.Vidas].activeSelf )
             {
                 vidasDisponibles[3+jugadorRemoto.Vidas].SetActive( false );
                 ParticleSystem partic = Instantiate( particulas[1] , null );
@@ -193,7 +195,8 @@ namespace Nexon
                 Destroy( partic.gameObject , 3f );
             }
 
-            if( jugadorLocal.Vidas == 0 || jugadorRemoto.Vidas == 0 )
+
+            if( jugadorLocal.Vidas == 0 )
             {
                 FinalizarPartida();
             }
@@ -270,35 +273,47 @@ namespace Nexon
             tiempoTurno = 10f;
             
 
-            while( tiempoRestantePartida > 0 )
+            while( tiempoRestantePartida > 0)
             {
                 if ( isServer )
                     tiempoRestantePartida = tiempoMaximoPartida - (Time.realtimeSinceStartup - tiempoInicioCuentaAtras);
 
-                if ( !explotando )
-                    tiempoTurno -= Time.unscaledDeltaTime;
-                
-                if( tiempoTurno < 0 )
+                if( jugadorLocal.Vidas > 0 )
                 {
-                    tiempoTurno = 10f;
-                    // TODO Preguntar
-                    /*turnosSinPuntuar++;
-                    if( turnosSinPuntuar > 2 )
+                    if ( !explotando )
+                        tiempoTurno -= Time.unscaledDeltaTime;
+                
+                    if( tiempoTurno < 0 )
                     {
-                        turnosSinPuntuar = 0;
+                        tiempoTurno = 10f;
+                    
+                        // TODO Preguntar
+                        /*turnosSinPuntuar++;
+                        if( turnosSinPuntuar > 2 )
+                        {
+                            turnosSinPuntuar = 0;
+                            jugadorLocal.Vidas--;
+                        }*/
+
                         jugadorLocal.Vidas--;
-                    }*/
-                    jugadorLocal.Vidas--;
-                    StartCoroutine( ComprobarExplosiones(casillas[0,0]) );
+                        fichasPuestas = 2;
+
+                        fichasTurno[0].SetActive( false );
+                        fichasTurno[1].SetActive( false );
+                        fichasTurno[2].SetActive( false );
+
+                        OnCasillaPulsada( casillas[0 , 0] );
+                        //StartCoroutine( ComprobarExplosiones(casillas[0,0]) );
+                    }
                 }
 
                 ActualizarTiempo( tiempoRestantePartida );
                 yield return null;
             }
             
+            panelBloqueo.SetActive( true );
             // Esperamos a que ambos jugadores hayan finalizado sus explosiones para mostrar el mensaje de victoria / derrota
             //yield return new WaitUntil( () => !jugadorLocal.Explotando && !jugadorRemoto.Explotando );
-            panelBloqueo.SetActive( true );
 
             FinalizarPartida();
         }
@@ -351,6 +366,10 @@ namespace Nexon
         {
             if( tiempoRestantePartida <= 0 )
                 yield break; // En cuanto acabe el tiempo dejamos de explotar
+            //if( jugadorLocal.Vidas <= 0 )
+            //    yield break; // Si no tengo vidas, dejamos de explotar
+            //if( jugadorRemoto.Vidas <= 0 )
+            //    yield break; // Si el oponente no tiene vidas, dejamos de explotar
 
             // El efecto de partículas de romperse o cambiar de valor se hace en el componente Casilla
             // El sonido se hace aquí
@@ -382,7 +401,7 @@ namespace Nexon
 
             explotando = true;
             // Comenzamos las explosiones en la última pulsada si su valor es superior a 3
-            if( casilla.Valor >= 4 )
+            if( casilla != null && casilla.Valor >= 4 )
             {
                 yield return ExplosionEnCoordendas( casilla.posicion.x , casilla.posicion.y );
                 algunaExplosion = true;
@@ -413,7 +432,7 @@ namespace Nexon
             if( !algunaExplosion )
             {
                 turnosSinPuntuar++;
-                if( turnosSinPuntuar > 2 )
+                //if( turnosSinPuntuar > 2 ) Version inicial
                 {
                     turnosSinPuntuar = 0;
 
@@ -430,7 +449,7 @@ namespace Nexon
             //jugadorLocal.Explotando = false;
 
             explotando = false;
-            if( tiempoRestantePartida > 0 )
+            if( tiempoRestantePartida > 0 && jugadorLocal.Vidas > 0 )
                 tiempoTurno = 10f;
         }
 
@@ -443,7 +462,8 @@ namespace Nexon
         {
             panelBloqueo.SetActive( true ); // Bloqueamos la interacción con el tablero
 
-            StopAllCoroutines(); // Detenemos los contadores de tiempo y explosiones
+            if ( tiempoRestantePartida <= 0 || jugador.Count == 1)
+                StopAllCoroutines(); // Detenemos los contadores de tiempo y explosiones
 
             // Comprobamos el ganador / perdedor de la partida
             #region ComprobacionVictoriaDerrota
@@ -480,10 +500,16 @@ namespace Nexon
             }
             #endregion ComprobacionVictoriaDerrota
 
-            //TODO ACabar esto if ( jugador.Count)
-            textoVictoria.text = languageManager.ReturnLine( 62 ); // Listo
+            if ( tiempoRestantePartida > 0 )
+                textoVictoria.text = languageManager.ReturnLine( 61 ); // Esperando Jugador
             // Mostramos el mensaje de Victora / Derrota
-            textoVictoria.transform.parent.parent.gameObject.SetActive( true );
+            panelVictoria.SetActive( true );
+
+            // Solo cuando realmente acaba la partida para ambos se muestra el botón para volver.
+            if( tiempoRestantePartida <= 0 || jugador.Count == 1)
+            {
+                botonVolverAlMenu.gameObject.SetActive( true );
+            }
         }
 
         /// <summary>
@@ -553,12 +579,21 @@ namespace Nexon
         public void IrAlMenu()
         {
             jugador = new LinkedList<Jugador>();
-            NetworkManager.singleton.matchMaker.DestroyMatch( NetworkManager.singleton.matchInfo.networkId , 0 , OnDestroyMatch );
+            if( isServer )
+                NetworkManager.singleton.matchMaker.DestroyMatch( NetworkManager.singleton.matchInfo.networkId , 0 , OnDestroyMatch );
+            else
+            {
+                NetworkManager.singleton.StopClient();
+                NetworkManager.singleton.StopMatchMaker();
+                
+                Destroy( NetworkManager.singleton.gameObject );
+                UnityEngine.SceneManagement.SceneManager.LoadScene( 0 );
+            }
         }
         public void IrAlLobby()
         {
-            jugador = new LinkedList<Jugador>();
-            UnityEngine.SceneManagement.SceneManager.LoadScene( 1 );
+            //jugador = new LinkedList<Jugador>();
+            //UnityEngine.SceneManagement.SceneManager.LoadScene( 1 );
         }
         public void Rematch()
         {
@@ -570,8 +605,11 @@ namespace Nexon
         public void OnDestroyMatch( bool success , string extendedInfo )
         {
             NetworkManager.singleton.OnDestroyMatch( success , extendedInfo );
-            NetworkManager.singleton.StopMatchMaker();
-            NetworkManager.singleton.StopHost();
+            if( isServer )
+            {
+                NetworkManager.singleton.StopMatchMaker();
+                NetworkManager.singleton.StopHost();
+            }
             Destroy( NetworkManager.singleton.gameObject );
             UnityEngine.SceneManagement.SceneManager.LoadScene( 0 );
         }

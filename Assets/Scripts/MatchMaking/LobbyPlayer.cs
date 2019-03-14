@@ -10,7 +10,13 @@ namespace Nexon.Networking {
         private IEnumerator Start()
         {
             DontDestroyOnLoad( gameObject );
-            yield return new WaitForSecondsRealtime( 5f );
+
+            if ( isServer )
+#if UNITY_EDITOR
+                yield return new WaitForSecondsRealtime( 20f );
+#else
+                yield return new WaitForSecondsRealtime( 10f );
+#endif
             SendReadyToBeginMessage();
         }
     }

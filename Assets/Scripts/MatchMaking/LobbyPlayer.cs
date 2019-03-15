@@ -11,13 +11,11 @@ namespace Nexon.Networking {
         {
             DontDestroyOnLoad( gameObject );
 
-            if ( isServer )
-#if UNITY_EDITOR
-                yield return new WaitForSecondsRealtime( 20f );
-#else
+            if( isServer && isLocalPlayer)
                 yield return new WaitForSecondsRealtime( 10f );
-#endif
+            
             SendReadyToBeginMessage();
         }
     }
+
 }

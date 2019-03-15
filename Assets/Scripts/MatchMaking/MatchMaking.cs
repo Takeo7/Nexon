@@ -10,8 +10,6 @@ namespace Nexon.Networking {
     [RequireComponent(typeof(NetworkMigrationManager))]
     public class MatchMaking : NetworkLobbyManager
     {
-        private bool partidaEncontrada = false;
-
         private bool matchmaking = false;
         private bool isHosting = false;
         private bool _disconnectServer = false;
@@ -34,9 +32,23 @@ namespace Nexon.Networking {
                     StopMatchMaker();
                 }
                 Destroy( gameObject );
-                UnityEngine.SceneManagement.SceneManager.LoadScene( 0 );
+                SceneManager.LoadScene( 0 );
             }
 
+        }
+        public override void OnLobbyServerConnect( NetworkConnection conn )
+        {
+            base.OnLobbyServerConnect( conn );
+            
+            // Este método se ejecuta sólo en el servidor, y sólo cuando un cliente se ha conectado
+            // De modo buscamos en el listado de jugadores conectados aquel que sea el local
+            NetworkLobbyPlayer servidor = System.Array.Find
+                ( 
+                    lobbySlots, 
+                    ( slot ) => { return slot.isLocalPlayer; } 
+                );
+            // El servidor se marca como ready cuando un nuevo cliente se conecte
+            servidor.SendReadyToBeginMessage();
         }
 
         public override void OnLobbyServerPlayersReady()
@@ -101,6 +113,7 @@ namespace Nexon.Networking {
         }
 
         void Start () {
+            singleton.SetupMigrationManager( GetComponent<NetworkMigrationManager>() );
             CrearOUnirse();
 	    }
         

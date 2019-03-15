@@ -15,28 +15,28 @@ namespace Nexon
 #endregion SyncVars
 
 #region Fields
-        [SerializeField] private Casilla casillaPrefab;
+        [SerializeField] private Casilla casillaPrefab = null;
 
-        [SerializeField] private Transform canvasPanel;
+        [SerializeField] private Transform canvasPanel = null;
 
-        [SerializeField] private GameObject panelBloqueo;
-        [SerializeField] private GameObject panelCuentaAtras;
-        [SerializeField] private GameObject panelVictoria;
+        [SerializeField] private GameObject panelBloqueo = null;
+        [SerializeField] private GameObject panelCuentaAtras = null;
+        [SerializeField] private GameObject panelVictoria = null;
 
-        [SerializeField] private Button botonVolverAlMenu;
+        [SerializeField] private Button botonVolverAlMenu = null;
 
-        [SerializeField] private ParticleSystem[] particulas;
+        [SerializeField] private ParticleSystem[] particulas = null;
 
-        [SerializeField] private Image imagenTiempo, imagenTiempoTurno;
+        [SerializeField] private Image imagenTiempo = null, imagenTiempoTurno = null;
 
-        [SerializeField] private Text textoTiempoPartida, textoTiempoTurno;
-        [SerializeField] private Text textoPuntosJugador;
-        [SerializeField] private Text textoPuntosEnemigo;
-        [SerializeField] private Text textoVictoria;
-        [SerializeField] private Text player1NameText;
-        [SerializeField] private Text enemyNameText;
+        [SerializeField] private Text textoTiempoPartida = null, textoTiempoTurno = null;
+        [SerializeField] private Text textoPuntosJugador = null;
+        [SerializeField] private Text textoPuntosEnemigo = null;
+        [SerializeField] private Text textoVictoria = null;
+        [SerializeField] private Text player1NameText = null;
+        [SerializeField] private Text enemyNameText = null;
 
-        [SerializeField] private GameObject[] fichasTurno, vidasDisponibles;
+        [SerializeField] private GameObject[] fichasTurno = null, vidasDisponibles = null;
 
         [Tooltip( "Tiempo máximo de la partida en segundos." )]
         [SerializeField] private int tiempoMaximoPartida = 180;
@@ -56,8 +56,7 @@ namespace Nexon
         private float tiempoTurno = 10f;
         private int turnosSinPuntuar = 0;
         private bool explotando = false;
-        private int jugadoresIniciales = 0;
-
+        
 
         private static LinkedList<Jugador> jugador = new LinkedList<Jugador>();
         
@@ -206,12 +205,12 @@ namespace Nexon
         {
             if ( 0 != string.Compare( textoPuntosJugador.text, jugadorLocal.Puntos.ToString() ) )
                 particulas[0].Play();
-            if( 0 != string.Compare( textoPuntosEnemigo.text , jugadorRemoto.Puntos.ToString() ) )
-                particulas[1].Play();
+            //if( 0 != string.Compare( textoPuntosEnemigo.text , jugadorRemoto.Puntos.ToString() ) )
+            //    particulas[1].Play();
 
             textoPuntosJugador.text = jugadorLocal.Puntos.ToString();
-            if ( jugadorRemoto != null )
-                textoPuntosEnemigo.text = jugadorRemoto.Puntos.ToString();
+            //if ( jugadorRemoto != null )
+            //    textoPuntosEnemigo.text = jugadorRemoto.Puntos.ToString();
         }
         private void ActualizarTiempo(float tiempo)
         {
@@ -590,11 +589,8 @@ namespace Nexon
                 UnityEngine.SceneManagement.SceneManager.LoadScene( 0 );
             }
         }
-        public void IrAlLobby()
-        {
-            //jugador = new LinkedList<Jugador>();
-            //UnityEngine.SceneManagement.SceneManager.LoadScene( 1 );
-        }
+
+        // Volver a jugar una partida con el mismo adversario
         public void Rematch()
         {
             // TODO

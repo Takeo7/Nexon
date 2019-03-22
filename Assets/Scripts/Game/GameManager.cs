@@ -10,7 +10,7 @@ namespace Nexon
 
     public class GameManager : NetworkBehaviour {
 #region SyncVars
-        private SyncListInt valoresIniciales = new SyncListInt();
+        [SyncVar] private int semillaTablero = -1;
         [SyncVar] private float tiempoRestantePartida = 180;
 #endregion SyncVars
 
@@ -56,7 +56,7 @@ namespace Nexon
         private float tiempoTurno = 10f;
         private int turnosSinPuntuar = 0;
         private bool explotando = false;
-        
+
 
         private static LinkedList<Jugador> jugador = new LinkedList<Jugador>();
         
@@ -93,17 +93,16 @@ namespace Nexon
             GetComponent<Canvas>().worldCamera = Camera.main;
             ActualizarTiempo( tiempoMaximoPartida );
 
-            //yield return new WaitForSeconds(1f); // new WaitUntil( () => jugador.Count == NetworkServer.connections.Count );
-
             ActualizarPuntuacion();
             ActualizarVidas();
 
-            if( isServer )
-            {
-                ObtenerValoresIniciales(); // Solo debe hacerlo el servidor
+            if( isServer ){
+                // TODO La semilla debe generarla sólo si está jugando contra alguien
+                // o si no se ha emparejado al jugador con nadie y la partida queda por tanto en standby
+                semillaTablero = Random.Range( 0 , int.MaxValue );
+            }else{
+                yield return new WaitUntil( () => semillaTablero >= 0);
             }
-
-            yield return new WaitUntil( () => valoresIniciales.Count == (lengthX * lengthY) );
 
             CrearTablero();
         }
@@ -121,11 +120,21 @@ namespace Nexon
         [Server]
         private void ObtenerValoresIniciales()
         {
+            for( int i = 0 ; i < lengthX ; i++ )
+            {
+                for( int j = 0 ; j < lengthY ; j++ )
+                {
+                    
+                }
+            }
+        }
+
+        private void CrearTablero()
+        {
             // treses = 19% 7fichas
             // doses = 42% 15fichas
             // unos = 28% 10Fichas
             // ceros = 11% 4fichas
-
             Dictionary<int , int> cantidades = new Dictionary<int , int>() {
                 {3, 7 },
                 {2, 15 },
@@ -134,39 +143,27 @@ namespace Nexon
             };
 
             // TODO Obtener el mismo seed para 2 jugadores emparejados
-            //Random.InitState( 42 );
+            Random.InitState( semillaTablero );
 
             for( int i = 0 ; i < lengthX ; i++ )
             {
                 for( int j = 0 ; j < lengthY ; j++ )
                 {
+                    casillas[i , j] = Instantiate( casillaPrefab , canvasPanel ); 
+                    casillas[i , j].transform.SetParent( canvasPanel );
+                    casillas[i , j].posicion = new Vector2Int( i , j );
+
                     List<int> keyList = new List<int>( cantidades.Keys );
-                    int numeroCasilla = keyList[ Random.Range( 0 , keyList.Count ) ];
+                    int numeroCasilla = keyList[Random.Range( 0 , keyList.Count )];
 
                     cantidades[numeroCasilla]--;
-                    if( cantidades[numeroCasilla] == 0 ){
+                    if( cantidades[numeroCasilla] == 0 )
+                    {
                         cantidades.Remove( numeroCasilla );
                     }
-                    valoresIniciales.Add( numeroCasilla );
-                }
-            }
-        }
+                    casillas[i , j].Valor = numeroCasilla;
 
-        private void CrearTablero()
-        {
-            int k = 0;
-            for( int i = 0 ; i < lengthX ; i++ )
-            {
-                for( int j = 0 ; j < lengthY ; j++ )
-                {
-                    casillas[i , j] = Instantiate( casillaPrefab , canvasPanel ); //casillas[i , j] = PhotonNetwork.Instantiate( "casillaPrefab" , Vector3.zero , Quaternion.identity , 0 );
-                    //casillas[i , j].GetComponent<PhotonView>().RPC( "ChangeParams" , PhotonTargets.AllBuffered , i , j , new Vector2( posX , posY ) , numeroCasilla );
-                    casillas[i , j].transform.SetParent( canvasPanel );
-                    //casillas[i , j].transform.localScale = Vector3.one;
-                    casillas[i , j].posicion = new Vector2Int( i , j );
-                    casillas[i , j].Valor = valoresIniciales[k];
                     casillas[i , j].onClick += OnCasillaPulsada;
-                    k++;
                 }
             }
             ComenzarPartida();
@@ -466,49 +463,64 @@ namespace Nexon
 
             // Comprobamos el ganador / perdedor de la partida
             #region ComprobacionVictoriaDerrota
-            if( jugadorLocal.Vidas == 0 )
+            int ganaJugador = 0; // =0 ->Esperando, >0 ->Jugador1, <0 ->Jugador2
+
+            if( tiempoRestantePartida <= 0 || jugadorRemoto.Vidas <= 0 )
             {
-                textoVictoria.text = languageManager.ReturnLine( 16 ); // Derrota
-            }
-            else if( jugadorRemoto.Vidas == 0 )
-            {
-                textoVictoria.text = languageManager.ReturnLine( 17 ); // Victoria
-            }
-            else if( jugadorLocal.Puntos > jugadorRemoto.Puntos )
-            {
-                textoVictoria.text = languageManager.ReturnLine( 17 ); // Victoria
-            }
-            else if( jugadorLocal.Puntos < jugadorRemoto.Puntos )
-            {
-                textoVictoria.text = languageManager.ReturnLine( 16 ); // Derrota
-            }
-            else if( jugadorLocal.TiempoUltimaJugada < jugadorRemoto.TiempoUltimaJugada )
-            {
-                textoVictoria.text = languageManager.ReturnLine( 17 ); // Victoria
-            }
-            else if( jugadorLocal.TiempoUltimaJugada > jugadorRemoto.TiempoUltimaJugada )
-            {
-                textoVictoria.text = languageManager.ReturnLine( 16 ); // Derrota
-            }
-            else
-            {
+                if( jugadorLocal.Vidas == 0 )
+                {
+                    ganaJugador -= 1000;
+                }
+                if( jugadorRemoto.Vidas == 0 )
+                {
+                    ganaJugador += 1000;
+                }
+
+                if( jugadorLocal.Puntos > jugadorRemoto.Puntos )
+                {
+                    ganaJugador += 100;
+                } else if( jugadorLocal.Puntos < jugadorRemoto.Puntos )
+                {
+                    ganaJugador -= 100;
+                }
+
+                if( jugadorLocal.TiempoUltimaJugada < jugadorRemoto.TiempoUltimaJugada )
+                {
+                    ganaJugador += 10;
+                }
+                else if( jugadorLocal.TiempoUltimaJugada > jugadorRemoto.TiempoUltimaJugada )
+                {
+                    ganaJugador -= 10;
+                }
+
                 if( isServer )
-                    textoVictoria.text = languageManager.ReturnLine( 17 ); // Victoria
+                    ganaJugador++;
                 else
-                    textoVictoria.text = languageManager.ReturnLine( 16 ); // Derrota
+                    ganaJugador--;
             }
             #endregion ComprobacionVictoriaDerrota
 
-            if ( tiempoRestantePartida > 0 )
-                textoVictoria.text = languageManager.ReturnLine( 61 ); // Esperando Jugador
             // Mostramos el mensaje de Victora / Derrota
             panelVictoria.SetActive( true );
 
-            // Solo cuando realmente acaba la partida para ambos se muestra el botón para volver.
-            if( tiempoRestantePartida <= 0 || jugador.Count == 1)
+            if( ganaJugador == 0 )
             {
+                textoVictoria.text = languageManager.ReturnLine( 61 ); // Esperando Jugador
+            }
+            else
+            {
+                if ( ganaJugador > 0 )
+                    textoVictoria.text = languageManager.ReturnLine( 17 ); // Victoria
+                else
+                    textoVictoria.text = languageManager.ReturnLine( 16 ); // Derrota
+
                 botonVolverAlMenu.gameObject.SetActive( true );
             }
+
+            // Solo cuando realmente acaba la partida para ambos se muestra el botón para volver.
+            //if( tiempoRestantePartida <= 0 || jugador.Count == 1 || ( jugadorRemoto.Vidas == 0 && jugadorLocal.Vidas == 0) )
+            //{
+            //}
         }
 
         /// <summary>

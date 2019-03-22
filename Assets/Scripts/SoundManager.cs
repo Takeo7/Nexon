@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class SoundManager : MonoBehaviour {
 
 	#region Singleton
@@ -16,11 +15,13 @@ public class SoundManager : MonoBehaviour {
 		{
 			instance = this;
 		}
+        audioSource = GetComponent<AudioSource>();
 	}
 	#endregion
 
-	public AudioSource audioSource;
 	public AudioClip[] sounds; // all taps for this moment
+
+	private AudioSource audioSource; // obtained with GetComponent
 
 	public void PlaySound(AudioClip clip)
 	{
@@ -29,15 +30,13 @@ public class SoundManager : MonoBehaviour {
 		audioSource.Play();
 	}
 
+    public void SetVolume( float vol )
+    {
+        audioSource.volume = vol;
+    }
+
     public void Mute( bool muted )
     {
-        //audioSource.mute = muted;
-    
-        var allAudioSources = FindObjectsOfType<AudioSource>();
-    
-        foreach ( var audioS in allAudioSources )
-        {
-            audioS.mute = muted;
-        }
+        audioSource.mute = muted;
     }
 }

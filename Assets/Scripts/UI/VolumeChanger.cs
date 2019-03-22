@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class VolumeChanger : MonoBehaviour {
 
@@ -13,7 +10,7 @@ public class VolumeChanger : MonoBehaviour {
 	}
 	public void ChangeVolume(float value)
 	{
-		SM.audioSource.volume = value;
+        SM.SetVolume( value );
 	}
     public void Mute(bool muted)
     {

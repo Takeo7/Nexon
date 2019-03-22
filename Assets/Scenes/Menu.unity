@@ -1228,7 +1228,7 @@ GameObject:
   - component: {fileID: 453920527}
   - component: {fileID: 453920526}
   m_Layer: 0
-  m_Name: LanguageManager
+  m_Name: LanguageAndSoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1371,7 +1371,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13b80af917587e47bb59f4c6f94ac7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 453920526}
   sounds:
   - {fileID: 8300000, guid: 70b4ebb3140c9564a9d9650c6a3a45f3, type: 3}
   - {fileID: 8300000, guid: 5798ff388a7433f449d5f3f09a19ced5, type: 3}
